@@ -1,12 +1,10 @@
-//
-//  main.swift
-//  StretchSense
-//
-//  Created by Slobodan Milanko on 3/25/17.
-//  Copyright © 2017 Slobodan Milanko. All rights reserved.
-//
-
 import Foundation
 
-print("Hello, World!")
+let runLoop = RunLoop.current;
+let distantFuture = Date.distantFuture;
 
+let worker = BluetoothWorker();
+
+while (runLoop.run(mode: RunLoopMode.defaultRunLoopMode, before: distantFuture)){
+    print("### listening for a stretchsense device");
+}

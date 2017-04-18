@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		DE763F461E86DBD300AD47E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE763F451E86DBD300AD47E3 /* main.swift */; };
+		DE763F4D1E86E63A00AD47E3 /* BluetoothWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE763F4C1E86E63A00AD47E3 /* BluetoothWorker.swift */; };
+		DE763F4F1E873A7C00AD47E3 /* DataLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE763F4E1E873A7C00AD47E3 /* DataLogger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		DE763F421E86DBD300AD47E3 /* StretchSense */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StretchSense; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE763F451E86DBD300AD47E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		DE763F4C1E86E63A00AD47E3 /* BluetoothWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothWorker.swift; sourceTree = "<group>"; };
+		DE763F4E1E873A7C00AD47E3 /* DataLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataLogger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,8 @@
 			isa = PBXGroup;
 			children = (
 				DE763F451E86DBD300AD47E3 /* main.swift */,
+				DE763F4C1E86E63A00AD47E3 /* BluetoothWorker.swift */,
+				DE763F4E1E873A7C00AD47E3 /* DataLogger.swift */,
 			);
 			path = StretchSense;
 			sourceTree = "<group>";
@@ -120,6 +126,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE763F4D1E86E63A00AD47E3 /* BluetoothWorker.swift in Sources */,
+				DE763F4F1E873A7C00AD47E3 /* DataLogger.swift in Sources */,
 				DE763F461E86DBD300AD47E3 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -250,6 +258,7 @@
 				DE763F4B1E86DBD300AD47E3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
