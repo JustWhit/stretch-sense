@@ -11,17 +11,21 @@ class BluetoothWorker: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate 
     var myPherif: CBPeripheral?;
     
     let queue = DispatchQueue(label: "com.my.queue");
-    let logger = DataLogger();
+    let formatter = DateFormatter();
+    
+    var totalSample : Int = 0;
+    var logger : DataLogger;
     
     override init() {
+        logger = DataLogger();
         super.init();
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS";
         manager = CBCentralManager(delegate: self, queue: queue);
-        print("### we are scanning for devices");
     }
     
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        if (central.state == CBCentralManagerState.poweredOn) {
+        if (central.state == .poweredOn) {
             print("### bluetooth is enabled, starting scan");
             manager.scanForPeripherals(withServices: nil, options: nil);
         } else {
@@ -52,7 +56,6 @@ class BluetoothWorker: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate 
         print("## found services in stretchsense, looking for its characteristics");
         for service in peripheral.services! {
             let foundService = service as CBService;
-            print("we have a service \(foundService) ");
             peripheral.discoverCharacteristics(nil, for: foundService);
         }
     }
@@ -73,7 +76,14 @@ class BluetoothWorker: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate 
         let value = characteristic.value!;
         let valueIntSense:Int! = Int(value.hexadecimalString()!, radix: 16)!;
         let valueGen2 = CGFloat(convertRawDataToCapacitance(valueIntSense));
-        logger.writeToFile(data: valueGen2.description);
+        
+        totalSample += 1;
+        let toWrite = "\(valueGen2)," + formatter.string(from: Date()) + ",\(totalSample)";
+
+        DispatchQueue.global().async {
+            self.logger.writeStretchSenseData(stretchSenseEntry: toWrite);
+        }
+
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
@@ -83,7 +93,7 @@ class BluetoothWorker: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate 
     
     func convertRawDataToCapacitance(_ rawDataInt: Int) -> Float{
         // Capacitance(pF) = RawData * 0.10pF
-        return Float(rawDataInt)*1;
+        return Float(rawDataInt) * 0.10;
     }
     
     
