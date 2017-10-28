@@ -8,7 +8,20 @@ class DataLogger: NSObject {
     override init() {
         super.init();
         do {
-            let fileNameUrl = URL(string: FileManager.default.currentDirectoryPath + "/stretchsense.log");
+            // determine if the log file exists
+            let fileManager = FileManager.default;
+            let fileNameUrl = URL(string: fileManager.currentDirectoryPath + "/capacitance.csv");
+            if (fileManager.fileExists(atPath: fileNameUrl!.path)) {
+                do {
+                    try fileManager.removeItem(atPath: fileNameUrl!.path)
+                } catch {
+                    print("ERROR:: unable to remove old capacitance data");
+                    print(error.localizedDescription);
+                    exit(EXIT_FAILURE);
+                }
+            }
+            
+            fileManager.createFile(atPath: fileNameUrl!.path, contents: nil, attributes: nil);
             file = try FileHandle(forWritingTo: fileNameUrl!);
             file.write("pF,time,sample\n".data(using: String.Encoding.utf8, allowLossyConversion: false)!);
         } catch {

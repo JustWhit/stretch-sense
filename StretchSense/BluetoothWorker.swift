@@ -87,7 +87,6 @@ class BluetoothWorker: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate 
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        print("####### the device was disconnected");
         exit(EXIT_SUCCESS);
     }
     
