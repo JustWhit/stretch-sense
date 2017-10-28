@@ -1,0 +1,26 @@
+{
+  "DVTSourceControlWorkspaceBlueprintLocationsKey" : {
+    "88B211E67D133F50B19AD5DB29B34477F1CD5C07" : {
+      "DVTSourceControlBranchIdentifierKey" : "master",
+      "DVTSourceControlLocationRevisionKey" : "c99c0f19d48fb2f26b30f65b8926a7a8d6a78ace",
+      "DVTSourceControlBranchOptionsKey" : 4,
+      "DVTSourceControlBranchRemoteNameKey" : "origin",
+      "DVTSourceControlWorkspaceBlueprintLocationTypeKey" : "DVTSourceControlBranch"
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "88B211E67D133F50B19AD5DB29B34477F1CD5C07",
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "F9802162-B7F4-4371-B9F5-05B7DD3BF09B",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "88B211E67D133F50B19AD5DB29B34477F1CD5C07" : "stretch-sense\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "StretchSense",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "StretchSense.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/smilanko\/stretch-sense.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "88B211E67D133F50B19AD5DB29B34477F1CD5C07"
+    }
+  ]
+}
