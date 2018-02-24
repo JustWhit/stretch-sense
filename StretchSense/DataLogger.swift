@@ -23,7 +23,7 @@ class DataLogger: NSObject {
             
             fileManager.createFile(atPath: fileNameUrl!.path, contents: nil, attributes: nil);
             file = try FileHandle(forWritingTo: fileNameUrl!);
-            file.write("pF,time,sample\n".data(using: String.Encoding.utf8, allowLossyConversion: false)!);
+            file.write("pF,time\n".data(using: String.Encoding.utf8, allowLossyConversion: false)!);
         } catch {
             print(error.localizedDescription);
             exit(EXIT_FAILURE);

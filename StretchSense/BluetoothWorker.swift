@@ -78,7 +78,7 @@ class BluetoothWorker: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate 
         let valueGen2 = CGFloat(convertRawDataToCapacitance(valueIntSense));
         
         totalSample += 1;
-        let toWrite = "\(valueGen2)," + formatter.string(from: Date()) + ",\(totalSample)";
+        let toWrite = "\(valueGen2)," + String(format:"%f", (NSDate.timeIntervalSinceReferenceDate));
 
         DispatchQueue.global().async {
             self.logger.writeStretchSenseData(stretchSenseEntry: toWrite);

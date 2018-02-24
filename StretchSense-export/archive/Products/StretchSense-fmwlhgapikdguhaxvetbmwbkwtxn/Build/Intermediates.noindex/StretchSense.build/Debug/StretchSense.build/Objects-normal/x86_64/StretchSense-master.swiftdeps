@@ -1,0 +1,7 @@
+version: "Apple Swift version 4.0.3 (swiftlang-900.0.74.1 clang-900.0.39.2)"
+options: "c219de0c79f827438f4b02d05e1ed065"
+build_time: [1518796659, 194660000]
+inputs:
+  "/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/StretchSense/BluetoothWorker.swift": [1518795904, 0]
+  "/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/StretchSense/DataLogger.swift": [1518796400, 0]
+  "/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/StretchSense/main.swift": [1516637171, 0]
