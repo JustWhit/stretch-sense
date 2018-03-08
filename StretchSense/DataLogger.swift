@@ -4,13 +4,16 @@ class DataLogger: NSObject {
     
     var counter:Int = 0;
     var file: FileHandle!;
+    let formatter = DateFormatter();
     
     override init() {
         super.init();
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+        let date = String(format:"%f", (NSDate.timeIntervalSinceReferenceDate));
         do {
             // determine if the log file exists
             let fileManager = FileManager.default;
-            let fileNameUrl = URL(string: fileManager.currentDirectoryPath + "/capacitance.csv");
+            let fileNameUrl = URL(string: fileManager.currentDirectoryPath + "/Data/CAP_" + date + ".csv");
             if (fileManager.fileExists(atPath: fileNameUrl!.path)) {
                 do {
                     try fileManager.removeItem(atPath: fileNameUrl!.path)
