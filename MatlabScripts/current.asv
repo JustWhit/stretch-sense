@@ -92,7 +92,7 @@ Folder = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/Sens
 
 %GTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542161920_U_F_CENTER.csv';
 %SGTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542162176_U_R_CORNER.csv';
-capfiles = ["Xiphoid/CAP_2018-03-17_X_F_CENTER_EILEEN_32inch.csv","4thIntercostal/CAP_2018-03-17_4th_F_Center_EILEEN_35inch.csv"];
+capfiles = ["Xiphoid/CAP_2018-03-17_X_F_CENTER_EILEEN_32inch.csv","4thIntercostal/CAP_2018-03-17543007552_4th_F_Center_EILEEN_35inch.csv"];
 GTfiles = ["Xiphoid/GT_2018-03-17_X_F_CENTER_EILEEN_32inch.csv",""];
 figure; hold on;
 
