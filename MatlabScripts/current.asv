@@ -175,7 +175,7 @@ Folder = 'Z:\GitRepositories\stretch-sense\Data\SenseAppData\';
 
 capfiles = ["Xiphoid\CAP_2018-03-17_X_B_CENTER_EILEEN_31_5inch.csv","4thIntercostal\CAP_2018-03-17_4th_B_Center_EILEEN_34_5inch.csv"];
 %GTfiles = ["Xiphoid\GT_2018-03-17_X_B_CENTER_EILEEN_31_5inch.csv","4thIntercostal\GT_2018-03-17_4th_B_Center_EILEEN_34_5inch.csv"];
-figure; hold on;
+
 
 
 fileOne=strcat(Folder,capfiles(1));
@@ -203,14 +203,13 @@ tsOne = timeseries(cOne,tOne);
 tsTwo = timeseries(cTwo,tTwo);
 
 [d,i1,i2] = dtw(tsOne,tsTwo);
-%plot(ts)
 
+tsOneW = tsOne(i1);
+tsTwoW = tsTwo(i2);
 
-if i==1
-    linetype = 'r--';
-else
-    linetype = 'b:';
-end
+figure; hold on;
+plot(tsOneW);
+plot(tsTwoW);
 
 
 title('Xiphoid vs 4th Intercostal::Back Center')
@@ -221,7 +220,87 @@ ylabel('Capacitance (pF)');
 
 legend('Xiphoid', '4th Intercostal');
 
-%%
+
+
+
+%% Single Plot
+
+Folder = 'Z:\GitRepositories\stretch-sense\Data\';
+%MACfilename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
+Filename = 'SenseAppData\Xiphoid\CAP_2018-03-25_Jan_FC_Xiphoid_30inch.csv'
+Gfilename = 'SenseAppData\Xiphoid\GT_2018-03-25_Jan_FC_Xiphoid_30inch.csv'
+
+%GTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542161920_U_F_CENTER.csv';
+%SGTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542162176_U_R_CORNER.csv';
+%capfiles = ["Xiphoid\CAP_2018-03-17_X_B_CENTER_EILEEN_31_5inch.csv","4thIntercostal\CAP_2018-03-17_4th_B_Center_EILEEN_34_5inch.csv"];
+%GTfiles = ["Xiphoid\GT_2018-03-17_X_B_CENTER_EILEEN_31_5inch.csv","4thIntercostal\GT_2018-03-17_4th_B_Center_EILEEN_34_5inch.csv"];
+figure; hold on;
+
+
+    capfile=strcat(Folder,Filename);
+    GTfile = strcat(Folder,Gfilename);
+    
+    %Read data
+    T=readtable(capfile);
+    GT=readtable(GTfile);
+    
+    time = T{:,2};
+    cap = T{:,1};
+    start=time(1);
+    for n = 1:length(time)
+       time(n) = time(n)-start;
+    end
+    
+    Ttime = GT{:,2};
+    Tlabel = GT{:,1};
+    %for n = 1:length(Ttime)
+    %    Ttime(n) = (100 * (Ttime(n) - floor(Ttime(n)))) + (floor(Ttime(n)) * 60);
+    % end
+
+    start=Ttime(1);
+    for n = 1:length(Ttime)
+        Ttime(n)=Ttime(n)-start;
+    end
+    ts=timeseries(cap,time)
+
+    %  Plot data
+    plot(ts)
+    
+    % Find peaks in data
+%     [pks,locs,widths,proms] = findpeaks(cap, time,'MinPeakDistance',2, 'SortStr','descend');
+%     plot(time,cap,locs,pks,'o')
+
+    %z=max(cap{:});
+    %invertedcap= cellfun(@(x) z - x, cap, 'Un', false);
+    %[val,vloc,vwidths,vproms] = findpeaks(invertedcap, time, 'MinPeakDistance',2,'SortStr','descend');
+    % plot(time,cap,vlocs,val,'o')
+%     if i==1
+%         linetype = 'r--';
+%     else
+%         linetype = 'b:';
+%     end
+    linetype = {'g--','r--','p--','o--'};
+    for n=1:length(Ttime)
+%         line([Ttime(n) Ttime(n)],ylim,linetype);
+%         text(Ttime(n),min(ylim),Tlabel(n),'Rotation',90);
+           if contains(Tlabel(n),'Logging')
+         vline(Ttime(n),linetype,Tlabel(n));
+    end
+
+%     text(locs+10,pks,num2str((1:numel(pks))'))
+title('Female, 40yrs')
+xlabel('timestamp');
+ylabel('Capacitance (pF)');
+
+for n = 1:4
+    plot(NaN,NaN,'r--
+
+legend('Xiphoid', 'Start/End', 'Move', 'Deep Breath', 'Misc');
+
+
+
+
+%% Stretch Test
 path = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/StretchTesting.csv';
 
 test=readtable(path);
@@ -275,6 +354,102 @@ title('Capacitance vs Distance')
 xlabel('Distance(cm)');
 ylabel('Capacitance (pF)');
 legend('Increasing', 'Decreasing');
+
+
+
+
+
+
+
+%% Convert Cap to Distance
+Folder = 'Z:\GitRepositories\stretch-sense\Data\';
+%MACfilename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
+Filename = "SenseAppData\Xiphoid\CAP_2018-03-25_Jan_Breathing_FC_Xiphoid_30inch.csv"
+Gfilename = "SenseAppData\Xiphoid\GT_2018-03-25_Jan_Breathing_FC_Xiphoid_30inch.csv"
+Sfilename = 'StretchTesting.csv'
+%GTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542161920_U_F_CENTER.csv';
+%SGTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542162176_U_R_CORNER.csv';
+%capfiles = ["Xiphoid\CAP_2018-03-17_X_B_CENTER_EILEEN_31_5inch.csv","4thIntercostal\CAP_2018-03-17_4th_B_Center_EILEEN_34_5inch.csv"];
+%GTfiles = ["Xiphoid\GT_2018-03-17_X_B_CENTER_EILEEN_31_5inch.csv","4thIntercostal\GT_2018-03-17_4th_B_Center_EILEEN_34_5inch.csv"];
+figure; hold on;
+
+
+    capfile=strcat(Folder,Filename);
+    GTfile = strcat(Folder,Gfilename);
+    Sfile = strcat(Folder,Sfilename);
+    
+    %Read data
+    Tstretch=readtable(Sfile);
+    Tcap=readtable(capfile);
+    Tgt=readtable(GTfile);
+    
+    time = Tcap{:,2};
+    cap = Tcap{:,1};
+    start=time(1);
+    for n = 1:length(time)
+       time(n) = time(n)-start;
+    end
+%     for n = 1:length(Ttime)
+%        Ttime(n) = (100 * (Ttime(n) - floor(Ttime(n)))) + (floor(Ttime(n)) * 60);
+%     end
+
+%     start=Ttime(1);
+%     for n = 1:length(Ttime)
+%         Ttime(n)=Ttime(n)-start;
+%     end
+    
+    Ttime = Tgt{:,2};
+    Tlabel = Tgt{:,1};
+    
+    Idist = Tstretch{:,2};
+    Icap = Tstretch{:,3};
+    Ddist = Tstretch{:,4};
+    Dcap = Tstretch{:,5};
+    ydist = [Idist; Ddist];
+    xcap = [Icap; Dcap];
+    Tmdl = table(xcap,ydist);
+    %linear regression model
+    mdl = fitlm(Tmdl);
+    ypred = predict(mdl, cap);
+    
+    for n = 1:length(ypred)
+        ypred(n)=ypred(n)-10;
+    end
+ 
+    
+ts=timeseries(ypred,time);
+    %  Plot data
+    plot(ts)
+
+    % Find peaks in data
+%     [pks,locs,widths,proms] = findpeaks(cap, time,'MinPeakDistance',2, 'SortStr','descend');
+%     plot(time,cap,locs,pks,'o')
+
+    %z=max(cap{:});
+    %invertedcap= cellfun(@(x) z - x, cap, 'Un', false);
+    %[val,vloc,vwidths,vproms] = findpeaks(invertedcap, time, 'MinPeakDistance',2,'SortStr','descend');
+    % plot(time,cap,vlocs,val,'o')
+%     if i==1
+%         linetype = 'r--';
+%     else
+%         linetype = 'b:';
+%     end
+    linetype = 'r--';
+    for n=1:length(Ttime)
+%         line([Ttime(n) Ttime(n)],ylim,linetype);
+%         text(Ttime(n),min(ylim),Tlabel(n),'Rotation',90);
+         vline(Ttime(n),linetype,Tlabel(n));
+    end
+
+%     text(locs+10,pks,num2str((1:numel(pks))'))
+title('Female, 40yrs')
+xlabel('Timestamp(s)');
+ylabel('Distance(cm)');
+
+
+
+legend('Xiphoid');
+
 
 
 
