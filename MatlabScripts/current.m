@@ -227,8 +227,8 @@ legend('Xiphoid', '4th Intercostal');
 
 Folder = 'Z:\GitRepositories\stretch-sense\Data\';
 %MACfilename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
-Filename = 'SenseAppData\Xiphoid\CAP_2018-03-25_Jan_Breathing_FC_Xiphoid_30inch.csv'
-Gfilename = 'SenseAppData\Xiphoid\GT_2018-03-25_Jan_Breathing_FC_Xiphoid_30inch.csv'
+Filename = 'SenseAppData\Xiphoid\CAP\CAP_2018-04-24_FVC_EX_Justin.csv'
+Gfilename = 'SenseAppData\Xiphoid\GT\GT_2018-04-24_FVC_EX_Justin.csv'
 
 %GTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542161920_U_F_CENTER.csv';
 %SGTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542162176_U_R_CORNER.csv';
@@ -246,6 +246,7 @@ figure; hold on;
     
     time = T{:,2};
     cap = T{:,1};
+    
     start=time(1);
     for n = 1:length(time)
        time(n) = time(n)-start;
@@ -279,7 +280,7 @@ figure; hold on;
 %     else
 %         linetype = 'b:';
 %     end
-    linetype = {'g--','r--','c--','m--'};
+    linetype = {'g--','r--'}; %'g--','r--','c--','m--'};
     for n=1:length(Ttime)
 %         line([Ttime(n) Ttime(n)],ylim,linetype);
 %         text(Ttime(n),min(ylim),Tlabel(n),'Rotation',90);
@@ -288,15 +289,15 @@ figure; hold on;
     end
 
 %     text(locs+10,pks,num2str((1:numel(pks))'))
-title('Female, 40yrs')
-xlabel('timestamp');
+title('Male, 37yrs')
+xlabel('time(1/30 s)');
 ylabel('Capacitance (pF)');
 
 for n = 1:4
     plot(NaN,NaN,linetype{n});
 end
 
-legend('Xiphoid', 'Start/End', 'Move', 'Deep Breath', 'Misc');
+legend('Xiphoid', 'Move'); %'Start/End', 'Move', 'Deep Breath', 'Misc');
 
 
 
