@@ -1,0 +1,8 @@
+>> AA = cumsum(diff(A2p));
+>> crosscorr(AA, C2p);
+>> AA = [0.0;AA];
+>> scatter(AA,C2p);
+>> AA = cumsum(abs(diff(A2p)));
+>> crosscorr(AA,C2p);
+>> AA = [0.0;AA];
+>> scatter(AA,C2p);
