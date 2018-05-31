@@ -269,14 +269,14 @@ length = min([numel(A1p) numel(C1p)]);
 A1p = A1p(1:length);
 C1p = C1p(1:length);
 
-A2=getsampleusingtime(ts,Ttime(4)-1.2,Ttime(5)+1.5);
+A2=getsampleusingtime(ts,Ttime(4)-0.75,Ttime(5)+1.5);
 A2p = A2.Data;
 C2p = tsC2.Data;
 length = min([numel(A2p) numel(C2p)]);
 A2p = A2p(1:length);
 C2p = C2p(1:length);
 
-A3 = getsampleusingtime(ts,Ttime(6)-1,Ttime(7)+1.5);
+A3 = getsampleusingtime(ts,Ttime(6)-0.7,Ttime(7)+1.5);
 A3p = A3.Data;
 C3p = tsC3.Data;
 length = min([numel(A3p) numel(C3p)]);
