@@ -156,7 +156,7 @@ Folder = 'Z:\GitRepositories\stretch-sense\Data';
 wFolder = '\Spirometry';
 
 
-XMLfile = char(fullfile(Folder, wFolder, 'Spiro_XML_export.xml'));
+XMLfile = char(fullfile(Folder, wFolder, 'Spiro_5_31_18.xml'));
 
 xmlDoc = xmlread(XMLfile);
 
@@ -168,7 +168,17 @@ FlowData = xpath.compile('//ChannelVolume/SamplingValues');
 FlowNodes = FlowData.evaluate(xmlDoc, XPathConstants.NODESET);
 
 %extracting Spirometer Traces from the XML
-node3 = FlowNodes.item(FlowNodes.getLength-1);
+node4 = FlowNodes.item(FlowNodes.getLength-1);
+C4 = strsplit(char(node4.getFirstChild.getNodeValue));
+C4 = str2double(C4);
+C4 = transpose(C4);
+Fs = 100;
+sRate = 1/Fs;
+C4time = linspace(0,length(C4)/100,length(C4));
+C4time = transpose(C4time);
+tsC4=timeseries(C4,C4time);
+
+node3 = FlowNodes.item(FlowNodes.getLength-2);
 C3 = strsplit(char(node3.getFirstChild.getNodeValue));
 C3 = str2double(C3);
 C3 = transpose(C3);
@@ -178,7 +188,7 @@ C3time = linspace(0,length(C3)/100,length(C3));
 C3time = transpose(C3time);
 tsC3=timeseries(C3,C3time);
 
-node2 = FlowNodes.item(FlowNodes.getLength-2);
+node2 = FlowNodes.item(FlowNodes.getLength-3);
 C2 = strsplit(char(node2.getFirstChild.getNodeValue));
 C2 = str2double(C2);
 C2 = transpose(C2);
@@ -186,7 +196,7 @@ C2time = linspace(0,length(C2)/100,length(C2));
 C2time = transpose(C2time);
 tsC2=timeseries(C2,C2time);
 
-node1 = FlowNodes.item(FlowNodes.getLength-3);
+node1 = FlowNodes.item(FlowNodes.getLength-4);
 C1 = strsplit(char(node1.getFirstChild.getNodeValue));
 C1 = str2double(C1);
 C1 = transpose(C1);
@@ -198,8 +208,8 @@ tsC1=timeseries(C1, C1time);
 
 Folder = 'Z:\GitRepositories\stretch-sense\Data\';
 %MACfilename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
-Filename = 'SenseAppData\Xiphoid\CAP\CAPJustin_T2_2018-04-27546540928.csv'
-Gfilename = 'SenseAppData\Xiphoid\GT\GTJustin_T2_2018-04-27546540928.csv'
+Filename = 'SenseAppData\Xiphoid\NoVideo\CAP_2018-05-31_Justin_SVC.csv'
+Gfilename = 'SenseAppData\Xiphoid\NoVideo\GT_2018-05-31_Justin_SVC.csv'
 
 %GTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542161920_U_F_CENTER.csv';
 %SGTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542162176_U_R_CORNER.csv';
@@ -261,7 +271,7 @@ ts = resample(ts,tsvector);
 %correlation
 
 figure; %hold on;
-A1 = getsampleusingtime(ts,Ttime(2)-1.45,Ttime(3)+1.7);
+A1 = getsampleusingtime(ts,Ttime(2),Ttime(3));
 
 A1p = A1.Data;
 C1p = tsC1.Data;
@@ -269,19 +279,26 @@ length = min([numel(A1p) numel(C1p)]);
 A1p = A1p(1:length);
 C1p = C1p(1:length);
 
-A2=getsampleusingtime(ts,Ttime(4)-0.75,Ttime(5)+1.5);
+A2=getsampleusingtime(ts,Ttime(4),Ttime(5));
 A2p = A2.Data;
 C2p = tsC2.Data;
 length = min([numel(A2p) numel(C2p)]);
 A2p = A2p(1:length);
 C2p = C2p(1:length);
 
-A3 = getsampleusingtime(ts,Ttime(6)-0.7,Ttime(7)+1.5);
+A3 = getsampleusingtime(ts,Ttime(6),Ttime(7));
 A3p = A3.Data;
 C3p = tsC3.Data;
 length = min([numel(A3p) numel(C3p)]);
 A3p = A3p(1:length);
 C3p = C3p(1:length);
+
+A4 = getsampleusingtime(ts,Ttime(8),Ttime(9));
+A4p = A4.Data;
+C4p = tsC4.Data;
+length = min([numel(A4p) numel(C4p)]);
+A4p = A4p(1:length);
+C4p = C4p(1:length);
 
 A = [A1p; A2p; A3p];
 C = [C1p; C2p; C3p];
