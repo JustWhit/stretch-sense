@@ -6,12 +6,12 @@ Folder = 'Z:\GitRepositories\stretch-sense\Data';
 wFolder = '\Spirometry';
 
 
-XMLfile = char(fullfile(Folder, wFolder, 'Spiro_6_19_18.xml'));
+XMLfile = char(fullfile(Folder, wFolder, 'Spiro_6_26_18.xml'));
 
 Folder = 'Z:\GitRepositories\stretch-sense\Data\';
 %MACfilename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
-Filename = 'SenseAppData\Abdominal\CAP_2018-06-19_JUSTIN_SVC.csv'
-Gfilename = 'SenseAppData\Abdominal\GT_2018-06-19_JUSTIN_SVC.csv'
+Filename = 'SenseAppData\Xiphoid\NoVideo\CAP_2018-06-26_JUSTIN_SVC.csv'
+Gfilename = 'SenseAppData\Xiphoid\NoVideo\GT_2018-06-26_JUSTIN_SVC.csv'
 
 xmlDoc = xmlread(XMLfile);
 
@@ -41,7 +41,7 @@ C2time = linspace(0,length(C2)/100,length(C2));
 C2time = transpose(C2time);
 tsC2=timeseries(C2,C2time);
 
-node1 = FlowNodes.item(FlowNodes.getLength-4);
+node1 = FlowNodes.item(FlowNodes.getLength-3);
 C1 = strsplit(char(node1.getFirstChild.getNodeValue));
 C1 = str2double(C1);
 C1 = transpose(C1);
@@ -126,20 +126,20 @@ length3 = min([numel(A3p) numel(C3p)]);
 A3p = A3p(1:length3);
 C3p = C3p(1:length3);
 
-A3p = [0.0; cumsum(diff(A3p))];
+A1p = [0.0; cumsum(diff(A1p))];
 % A3p = smooth(A3p,5,'lowess');
-A3p = A3p(1:1500);
-C3time = C3time(1:1500);
+A1p = A1p(1:2700);
+C1time = C1time(1:2700);
 
-[Pxx,F]=pwelch(A3p,Fs);
+[Pxx,F]=pwelch(A1p,Fs);
 mfreq = meanfreq(Pxx,F);
 figure;
 plot(F,Pxx); ylabel('PSD'); xlabel('Frequency(Hz)'); grid on; [~,loc] = max(Pxx); pwFREQ = F(loc); title(['PWelch Frequency estimate = ', num2str(pwFREQ),' Hz; MeanFreq est = ', num2str(mfreq)]);
 
 % % Find peaks in data
-    [pks,locs,widths,proms] = findpeaks(A3p, C3time, 'MinPeakProminence',4, 'SortStr','descend');
+    [pks,locs,widths,proms] = findpeaks(A1p, C1time, 'MinPeakProminence',4, 'SortStr','descend');
     figure;
-    plot(C3time,A3p,locs,pks,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(pks)/max(locs); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
+    plot(C1time,A1p,locs,pks,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(pks)/max(locs); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
 
 
 % NFFT = 2^nextpow2(length1); % Next power of 2 from length of y
