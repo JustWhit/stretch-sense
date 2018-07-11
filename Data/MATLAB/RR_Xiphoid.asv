@@ -125,8 +125,6 @@ for n = 1:length(Ttime2)
 end
 
 %resample cap data to match sample rate from spirometer
-Fs = 100;
-sRate = 1/Fs;
 tsvector = 0:sRate:time(length(time));
 tsvector2 = 0:sRate:time2(length(time2));
 
@@ -144,52 +142,38 @@ ts2 = resample(ts2,tsvector2);
 %extract individual effort traces from capacitance data using the ground
 %truth as a guide and resize the two samples to the same length for
 %correlation
-Corr = 0;
 
-A1 = getsampleusingtime(ts,Ttime(2),Ttime(3));
-A1p = A1.Data;
 C1p = tsC1.Data;
-% % Find peaks in data
-    [pks,locs,widths,proms] = findpeaks(A1p, A1.Time, 'MinPeakProminence',6);
-    [Cpks,Clocs,Cwidths,Cproms] = findpeaks(C1p, C1time, 'MinPeakProminence',6);
-    
-
-A1 = getsampleusingtime(ts,Ttime(2)-Corr,Ttime(3));
-A1p = A1.Data;
+A1p = getCapTrace(ts,Ttime,tsC1,1);
 length1 = min([numel(A1p) numel(C1p)]);
 A1p = A1p(1:length1);
 C1p = C1p(1:length1);
 
-A2=getsampleusingtime(ts,Ttime(4)-Corr,Ttime(5));
-A2p = A2.Data;
+A2p= getCapTrace(ts,Ttime,tsC2,2);
 C2p = tsC2.Data;
 length2 = min([numel(A2p) numel(C2p)]);
 A2p = A2p(1:length2);
 C2p = C2p(1:length2);
 
-A3 = getsampleusingtime(ts,Ttime(6)-Corr,Ttime(7));
-A3p = A3.Data;
+A3p = getCapTrace(ts,Ttime,tsC3,3);
 C3p = tsC3.Data;
 length3 = min([numel(A3p) numel(C3p)]);
 A3p = A3p(1:length3);
 C3p = C3p(1:length3);
 
-A4 = getsampleusingtime(ts2,Ttime2(2)-Corr,Ttime2(3));
-A4p = A4.Data;
+A4p = getCapTrace(ts2,Ttime2,tsC4,1);
 C4p = tsC4.Data;
 length4 = min([numel(A4p) numel(C4p)]);
 A4p = A4p(1:length4);
 C4p = C4p(1:length4);
 
-A5 = getsampleusingtime(ts2,Ttime2(4)-Corr,Ttime2(5));
-A5p = A5.Data;
+A5p = getCapTrace(ts2,Ttime2,tsC5,2);
 C5p = tsC5.Data;
 length5 = min([numel(A5p) numel(C5p)]);
 A5p = A5p(1:length5);
 C5p = C5p(1:length5);
 
-A6 = getsampleusingtime(ts2,Ttime2(6)-Corr,Ttime2(7));
-A6p = A6.Data;
+A6p = getCapTrace(ts2,Ttime2,tsC6,4);
 C6p = tsC6.Data;
 length6 = min([numel(A6p) numel(C6p)]);
 A6p = A6p(1:length6);
@@ -325,105 +309,143 @@ C6p = C6p(1:length6);
 % [C,I]= max(2*abs(Y(1:NFFT/2+1)));
 % F = f(I);
 
-% % %Linear Regression Fit MAX MIN DIFFERENCE
-% 
-% % % Find peaks in data
-%     [Apks1,Alocs1,Awidths1,Aproms1] = findpeaks(A1p, C1time, 'MinPeakProminence',6);
-%     [Cpks1,Clocs1,Cwidths1,Cproms1] = findpeaks(C1p, C1time, 'MinPeakProminence',0.25);
-%     [Apks2,Alocs2,Awidths2,Aproms2] = findpeaks(A2p, C2time, 'MinPeakProminence',6);
-%     [Cpks2,Clocs2,Cwidths2,Cproms2] = findpeaks(C2p, C2time, 'MinPeakProminence',0.25);
-%     [Apks3,Alocs3,Awidths3,Aproms3] = findpeaks(A3p, C3time, 'MinPeakProminence',6);
-%     [Cpks3,Clocs3,Cwidths3,Cproms3] = findpeaks(C3p, C3time, 'MinPeakProminence',0.25);
-%     [Apks4,Alocs4,Awidths4,Aproms4] = findpeaks(A4p, C4time, 'MinPeakProminence',6);
-%     [Cpks4,Clocs4,Cwidths4,Cproms4] = findpeaks(C4p, C4time, 'MinPeakProminence',0.25);
-%     [Apks5,Alocs5,Awidths5,Aproms5] = findpeaks(A5p, C5time, 'MinPeakProminence',6);
-%     [Cpks5,Clocs5,Cwidths5,Cproms5] = findpeaks(C5p, C5time, 'MinPeakProminence',0.25);
-%     [Apks6,Alocs6,Awidths6,Aproms6] = findpeaks(A6p, C6time, 'MinPeakProminence',6);
-%     [Cpks6,Clocs6,Cwidths6,Cproms6] = findpeaks(C6p, C6time, 'MinPeakProminence',0.25);
-% % % Find Valleys in Data
-%     [Avals1,Avlocs1,Avwidths1,Avproms1] = findpeaks(-A1p,C1time,'MinPeakProminence',6);
-%     [Cvals1,Cvlocs1,Cvwidths1,Cvproms1] = findpeaks(-C1p,C1time,'MinPeakProminence',0.25);
-%     [Avals2,Avlocs2,Avwidths2,Avproms2] = findpeaks(-A2p,C2time,'MinPeakProminence',6);
-%     [Cvals2,Cvlocs2,Cvwidths2,Cvproms2] = findpeaks(-C2p,C2time,'MinPeakProminence',0.25);
-%     [Avals3,Avlocs3,Avwidths3,Avproms3] = findpeaks(-A3p,C3time,'MinPeakProminence',6);
-%     [Cvals3,Cvlocs3,Cvwidths3,Cvproms3] = findpeaks(-C3p,C3time,'MinPeakProminence',0.25);
-%     [Avals4,Avlocs4,Avwidths4,Avproms4] = findpeaks(-A4p,C4time,'MinPeakProminence',6);
-%     [Cvals4,Cvlocs4,Cvwidths4,Cvproms4] = findpeaks(-C4p,C4time,'MinPeakProminence',0.25);
-%     [Avals5,Avlocs5,Avwidths5,Avproms5] = findpeaks(-A5p,C5time,'MinPeakProminence',6);
-%     [Cvals5,Cvlocs5,Cvwidths5,Cvproms5] = findpeaks(-C5p,C5time,'MinPeakProminence',0.25);
-%     [Avals6,Avlocs6,Avwidths6,Avproms6] = findpeaks(-A6p,C6time,'MinPeakProminence',6);
-%     [Cvals6,Cvlocs6,Cvwidths6,Cvproms6] = findpeaks(-C6p,C6time,'MinPeakProminence',0.25);
-%     
-%     
-%     
-%     
-% % % Pair Peaks to Valleys
-% lengthA = min([numel(Apks1) numel(Avals1)]);
-% Apks1 = Apks1(1:lengthA);
-% Avals1 = Avals1(1:lengthA);
-% Cpks1 = Cpks1(1:lengthA);
-% Cvals1 = Cvals1(1:lengthA);
-% 
-% lengthA = min([numel(Apks2) numel(Avals2)]);
-% Apks2 = Apks2(1:lengthA);
-% Avals2 = Avals2(1:lengthA);
-% Cpks2 = Cpks2(1:lengthA);
-% Cvals2 = Cvals2(1:lengthA);
-% 
-% lengthA = min([numel(Apks3) numel(Avals3)]);
-% Apks3 = Apks3(1:lengthA);
-% Avals3 = Avals3(1:lengthA);
-% Cpks3 = Cpks3(1:lengthA);
-% Cvals3 = Cvals3(1:lengthA);
-% 
-% lengthA = min([numel(Apks4) numel(Avals4)]);
-% Apks4 = Apks4(1:lengthA);
-% Avals4 = Avals4(1:lengthA);
-% Cpks4 = Cpks4(1:lengthA);
-% Cvals4 = Cvals4(1:lengthA);
-% 
-% lengthA = min([numel(Apks5) numel(Avals5)]);
-% Apks5 = Apks5(1:lengthA);
-% Avals5 = Avals5(1:lengthA);
-% Cpks5 = Cpks5(1:lengthA);
-% Cvals5 = Cvals5(1:lengthA);
-% 
-% lengthA = min([numel(Apks6) numel(Avals6)]);
-% Apks6 = Apks6(1:lengthA);
-% Avals6 = Avals6(1:lengthA);
-% Cpks6 = Cpks6(1:lengthA);
-% Cvals6 = Cvals6(1:lengthA);
-% 
-% 
-% % % Build Data for Model
-% inputs = [abs(Apks1 + Avals1);abs(Apks2 + Avals2);abs(Apks3 + Avals3);abs(Apks4 + Avals4)];
-% targets = [abs(Cpks1 + Cvals1); abs(Cpks2 + Cvals2);abs(Cpks3 + Cvals3);abs(Cpks4 + Cvals4)];
-% test = [abs(Apks5 + Avals5);abs(Apks6 + Avals6)];
-% actual = [abs(Cpks5 + Cvals5);abs(Cpks6 + Cvals6)];
-% 
-% % % Train\Test Model
-% mdl = fitlm(inputs,targets);
-% [pred, predCI] = predict(mdl,test);
-% 
-% % % Plots
-% figure, plotDiagnostics(mdl);
-% figure, plotDiagnostics(mdl, 'cookd');
-% figure, plotResiduals(mdl);
-% figure, plotResiduals(mdl, 'probability');
-% figure, plotResiduals(mdl, 'caseorder');
-% errors = gsubtract(pred,actual); 
-% 
-%  figure, plotregression(actual,pred)
-%  figure, ploterrhist(errors)
-% NFFT = 2^nextpow2(length(actual)); % Next power of 2 from length of y
-% Y = fft(inputs,NFFT)/length(actual);
-% f = Fs/2*linspace(0,1,NFFT/2+1);
-% % Plot single-sided amplitude spectrum.
-% figure, plot(f,2*abs(Y(1:NFFT/2+1))) 
-% title('Single-Sided Amplitude Spectrum of y(t)')
-% xlabel('Frequency (Hz)')
-% ylabel('|Y(f)|')
-% %I added the next lines to find the value
-% %find maximum value, it should be the fundamental frequency (approximated)
-% [C,I]= max(2*abs(Y(1:NFFT/2+1)));
-% F = f(I);
+% %Linear Regression Fit MAX MIN DIFFERENCE
+
+% % Find peaks in data
+    [Apks1,Alocs1,Awidths1,Aproms1] = findpeaks(A1p, C1time, 'MinPeakProminence',3);
+    [Cpks1,Clocs1,Cwidths1,Cproms1] = findpeaks(C1p, C1time, 'MinPeakProminence',0.1);
+    figure,hold on,plot(C1time,A1p,Alocs1,Apks1,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(Apks1)/max(Alocs1); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
+%     plot(vlocs,-vals,'r*');
+    plot(C1time,C1p,Clocs1,Cpks1,'r*');
+    
+    [Apks2,Alocs2,Awidths2,Aproms2] = findpeaks(A2p, C2time, 'MinPeakProminence',3);
+    [Cpks2,Clocs2,Cwidths2,Cproms2] = findpeaks(C2p, C2time, 'MinPeakProminence',0.1);
+    [Apks3,Alocs3,Awidths3,Aproms3] = findpeaks(A3p, C3time, 'MinPeakProminence',3);
+    [Cpks3,Clocs3,Cwidths3,Cproms3] = findpeaks(C3p, C3time, 'MinPeakProminence',0.1);
+    [Apks4,Alocs4,Awidths4,Aproms4] = findpeaks(A4p, C4time, 'MinPeakProminence',3);
+    [Cpks4,Clocs4,Cwidths4,Cproms4] = findpeaks(C4p, C4time, 'MinPeakProminence',0.1);
+    [Apks5,Alocs5,Awidths5,Aproms5] = findpeaks(A5p, C5time, 'MinPeakProminence',3);
+    [Cpks5,Clocs5,Cwidths5,Cproms5] = findpeaks(C5p, C5time, 'MinPeakProminence',0.1);
+    [Apks6,Alocs6,Awidths6,Aproms6] = findpeaks(A6p, C6time, 'MinPeakProminence',3);
+    [Cpks6,Clocs6,Cwidths6,Cproms6] = findpeaks(C6p, C6time, 'MinPeakProminence',0.1);
+% % Find Valleys in Data
+    [Avals1,Avlocs1,Avwidths1,Avproms1] = findpeaks(-A1p,C1time,'MinPeakProminence',3);
+    [Cvals1,Cvlocs1,Cvwidths1,Cvproms1] = findpeaks(-C1p,C1time,'MinPeakProminence',0.1);
+    [Avals2,Avlocs2,Avwidths2,Avproms2] = findpeaks(-A2p,C2time,'MinPeakProminence',3);
+    [Cvals2,Cvlocs2,Cvwidths2,Cvproms2] = findpeaks(-C2p,C2time,'MinPeakProminence',0.1);
+    [Avals3,Avlocs3,Avwidths3,Avproms3] = findpeaks(-A3p,C3time,'MinPeakProminence',3);
+    [Cvals3,Cvlocs3,Cvwidths3,Cvproms3] = findpeaks(-C3p,C3time,'MinPeakProminence',0.1);
+    [Avals4,Avlocs4,Avwidths4,Avproms4] = findpeaks(-A4p,C4time,'MinPeakProminence',3);
+    [Cvals4,Cvlocs4,Cvwidths4,Cvproms4] = findpeaks(-C4p,C4time,'MinPeakProminence',0.1);
+    [Avals5,Avlocs5,Avwidths5,Avproms5] = findpeaks(-A5p,C5time,'MinPeakProminence',3);
+    [Cvals5,Cvlocs5,Cvwidths5,Cvproms5] = findpeaks(-C5p,C5time,'MinPeakProminence',0.1);
+    [Avals6,Avlocs6,Avwidths6,Avproms6] = findpeaks(-A6p,C6time,'MinPeakProminence',3);
+    [Cvals6,Cvlocs6,Cvwidths6,Cvproms6] = findpeaks(-C6p,C6time,'MinPeakProminence',0.1);
+    
+    
+    
+    
+% % Pair Peaks to Valleys
+lengthA = min([numel(Apks1) numel(Avals1)])-1;
+Apks1 = Apks1(1:lengthA);
+Avals1 = Avals1(1:lengthA);
+Cpks1 = Cpks1(1:lengthA);
+Cvals1 = Cvals1(1:lengthA);
+
+lengthA = min([numel(Apks2) numel(Avals2)])-1;
+Apks2 = Apks2(1:lengthA);
+Avals2 = Avals2(1:lengthA);
+Cpks2 = Cpks2(1:lengthA);
+Cvals2 = Cvals2(1:lengthA);
+
+lengthA = min([numel(Apks3) numel(Avals3)])-1;
+Apks3 = Apks3(1:lengthA);
+Avals3 = Avals3(1:lengthA);
+Cpks3 = Cpks3(1:lengthA);
+Cvals3 = Cvals3(1:lengthA);
+
+lengthA = min([numel(Apks4) numel(Avals4)]);
+Apks4 = Apks4(1:lengthA);
+Avals4 = Avals4(1:lengthA);
+Cpks4 = Cpks4(1:lengthA);
+Cvals4 = Cvals4(1:lengthA);
+
+lengthA = min([numel(Apks5) numel(Avals5)]);
+Apks5 = Apks5(1:lengthA);
+Avals5 = Avals5(1:lengthA);
+Cpks5 = Cpks5(1:lengthA);
+Cvals5 = Cvals5(1:lengthA);
+
+lengthA = min([numel(Apks6) numel(Avals6)]);
+Apks6 = Apks6(1:lengthA);
+Avals6 = Avals6(1:lengthA);
+Cpks6 = Cpks6(1:lengthA);
+Cvals6 = Cvals6(1:lengthA);
+
+
+% % Build Data for Model
+inputs = [abs(Apks1 + Avals1);abs(Apks2 + Avals2);abs(Apks3 + Avals3);abs(Apks4 + Avals4)];
+targets = [abs(Cpks1 + Cvals1); abs(Cpks2 + Cvals2);abs(Cpks3 + Cvals3);abs(Cpks4 + Cvals4)];
+test = [abs(Apks5 + Avals5);abs(Apks6 + Avals6)];
+actual = [abs(Cpks5 + Cvals5);abs(Cpks6 + Cvals6)];
+
+% % Train\Test Model
+mdl = fitlm(inputs,targets);
+[pred, predCI] = predict(mdl,test);
+
+% % Plots
+figure, plotDiagnostics(mdl);
+figure, plotDiagnostics(mdl, 'cookd');
+figure, plotResiduals(mdl);
+figure, plotResiduals(mdl, 'probability');
+figure, plotResiduals(mdl, 'caseorder');
+errors = gsubtract(pred,actual); 
+
+ figure, plotregression(actual,pred)
+ figure, ploterrhist(errors)
+NFFT = 2^nextpow2(length(actual)); % Next power of 2 from length of y
+Y = fft(inputs,NFFT)/length(actual);
+f = Fs/2*linspace(0,1,NFFT/2+1);
+% Plot single-sided amplitude spectrum.
+figure, plot(f,2*abs(Y(1:NFFT/2+1))) 
+title('Single-Sided Amplitude Spectrum of y(t)')
+xlabel('Frequency (Hz)')
+ylabel('|Y(f)|')
+%I added the next lines to find the value
+%find maximum value, it should be the fundamental frequency (approximated)
+[C,I]= max(2*abs(Y(1:NFFT/2+1)));
+F = f(I);
+
+figure, hold on, plot(input), plot(pred),plot(actual), title('Capacitance with Predicterd and Actual Volume'), legend(['Capacitance(pF)';'Pvolume(L)     ';'Avolume(L)     ']),xlabel=('Time(s)'
+
+
+
+
+% % returns offset for aligning traces
+function a = getOffset(A,Cp,Ctime)
+    Ap = A.Data;
+    Atime = A.Time;
+    start=Atime(1);
+    for n = 1:length(Atime)
+        Atime(n)=Atime(n)-start;
+    end
+    
+% % Find peaks in data to align traces on Biggest Peak (Deep Breath)
+    [pks,locs,~,~] = findpeaks(Ap, Atime, 'MinPeakProminence',3);
+    [Cpks,Clocs,~,~] = findpeaks(Cp, Ctime, 'MinPeakProminence',0.25);
+%     [~,Ai]=max(pks);
+%     [~,Ci]=max(Cpks);
+    a = Clocs(1)-locs(1);
+end
+
+% % returns Offset Capacitance Trace
+function a = getCapTrace(CapTS,GTtime,SpiroTS,Sample)
+    A = getsampleusingtime(CapTS,GTtime(2*Sample),GTtime((2*Sample)+1));
+    C = SpiroTS.Data;
+    Corr = getOffset(A,C,SpiroTS.Time);
+
+    A = getsampleusingtime(CapTS,GTtime(2*Sample)-Corr,GTtime((2*Sample)+1));
+    figure,hold on, plot(cumsum(diff(A.Data))), plot(C.^2), title(Sample);
+    a = A.Data;
+
+end
