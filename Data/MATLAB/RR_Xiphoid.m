@@ -339,43 +339,66 @@ C6p = C6p(1:length6);
     [Cvals6,Cvlocs6,Cvwidths6,Cvproms6] = findpeaks(-C6p,C6time,'MinPeakProminence',0.1);
     
     
-%     figure,hold on,plot(C1time,A1p,Alocs1,Apks1,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(Apks1)/max(Alocs1); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
-% %     plot(vlocs,-vals,'r*');
-%     plot(C1time,C1p,Clocs1,Cpks1,'r*');
+    figure,hold on,plot(C1time,A1p,Alocs1,Apks1,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(Apks1)/max(Alocs1); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
+    plot(Avlocs1,-Avals1,'r*');
+    plot(C1time,C1p,Clocs1,Cpks1,'o');
+    plot(Cvlocs1,-Cvals1,'r*');
+     figure,hold on,plot(C2time,A2p,Alocs2,Apks2,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(Apks2)/max(Alocs2); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
+    plot(Avlocs2,-Avals2,'r*');
+    plot(C2time,C2p,Clocs2,Cpks2,'o');
+    plot(Cvlocs2,-Cvals2,'r*');
+    figure,hold on,plot(C3time,A3p,Alocs3,Apks3,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(Apks3)/max(Alocs3); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
+    plot(Avlocs3,-Avals3,'r*');
+    plot(C3time,C3p,Clocs3,Cpks3,'o');
+    plot(Cvlocs3,-Cvals3,'r*');
+    figure,hold on,plot(C4time,A4p,Alocs4,Apks4,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(Apks4)/max(Alocs4); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
+    plot(Avlocs4,-Avals4,'r*');
+    plot(C4time,C4p,Clocs4,Cpks4,'o');
+    plot(Cvlocs4,-Cvals4,'r*');
+    figure,hold on,plot(C5time,A5p,Alocs5,Apks5,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(Apks5)/max(Alocs5); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
+    plot(Avlocs5,-Avals5,'r*');
+    plot(C5time,C5p,Clocs5,Cpks5,'o');
+    plot(Cvlocs5,-Cvals5,'r*');
+    figure,hold on,plot(C6time,A6p,Alocs6,Apks6,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(Apks6)/max(Alocs6); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
+    plot(Avlocs6,-Avals6,'r*');
+    plot(C6time,C6p,Clocs6,Cpks6,'o');
+    plot(Cvlocs6,-Cvals6,'r*');
+    
+    
 
 
 % % Pair Peaks to Valleys
-lengthA = min([numel(Apks1) numel(Avals1)])-1;
+lengthA = min([numel(Cpks1) numel(Cvals1)])-1;
 Apks1 = Apks1(1:lengthA);
 Avals1 = Avals1(1:lengthA);
 Cpks1 = Cpks1(1:lengthA);
 Cvals1 = Cvals1(1:lengthA);
 
-lengthA = min([numel(Apks2) numel(Avals2)])-1;
+lengthA = min([numel(Cpks2) numel(Cvals2)])-1;
 Apks2 = Apks2(1:lengthA);
 Avals2 = Avals2(1:lengthA);
 Cpks2 = Cpks2(1:lengthA);
 Cvals2 = Cvals2(1:lengthA);
 
-lengthA = min([numel(Apks3) numel(Avals3)])-1;
+lengthA = min([numel(Cpks3) numel(Cvals3)])-1;
 Apks3 = Apks3(1:lengthA);
 Avals3 = Avals3(1:lengthA);
 Cpks3 = Cpks3(1:lengthA);
 Cvals3 = Cvals3(1:lengthA);
 
-lengthA = min([numel(Apks4) numel(Avals4)]);
+lengthA = min([numel(Cpks4) numel(Cvals4)]);
 Apks4 = Apks4(1:lengthA);
 Avals4 = Avals4(1:lengthA);
 Cpks4 = Cpks4(1:lengthA);
 Cvals4 = Cvals4(1:lengthA);
 
-lengthA = min([numel(Apks5) numel(Avals5)]);
+lengthA = min([numel(Cpks5) numel(Cvals5)]);
 Apks5 = Apks5(1:lengthA);
 Avals5 = Avals5(1:lengthA);
 Cpks5 = Cpks5(1:lengthA);
 Cvals5 = Cvals5(1:lengthA);
 
-lengthA = min([numel(Apks6) numel(Avals6)]);
+lengthA = min([numel(Cpks6) numel(Cvals6)]);
 Apks6 = Apks6(1:lengthA);
 Avals6 = Avals6(1:lengthA);
 Cpks6 = Cpks6(1:lengthA);
@@ -383,8 +406,8 @@ Cvals6 = Cvals6(1:lengthA);
 
 
 % % Build Data for Model
-inputs = [abs(Apks1 + Avals1);abs(Apks2 + Avals2);abs(Apks3 + Avals3);abs(Apks4 + Avals4)];
-targets = [abs(Cpks1 + Cvals1); abs(Cpks2 + Cvals2);abs(Cpks3 + Cvals3);abs(Cpks4 + Cvals4)];
+inputs = [abs(Apks1 + Avals1);abs(Apks2 + Avals2);abs(Apks4 + Avals4);abs(Apks3 + Avals3)];
+targets = [abs(Cpks1 + Cvals1);abs(Cpks2 + Cvals2);abs(Cpks4 + Cvals4);abs(Cpks3 + Cvals3)];
 test = [abs(Apks5 + Avals5);abs(Apks6 + Avals6)];
 actual = [abs(Cpks5 + Cvals5);abs(Cpks6 + Cvals6)];
 
@@ -415,7 +438,7 @@ ylabel('|Y(f)|')
 [C,I]= max(2*abs(Y(1:NFFT/2+1)));
 F = f(I);
 
-figure, hold on, plot(test,'o'), plot(pred,'o'),plot(actual,'o'), title('Capacitance with Predicted and Actual Volume'), legend(['Capacitance(pF)';'Pvolume(L)     ';'Avolume(L)     ']),xlabel('Data'), ylabel('Value');
+figure, hold on, plot(pred,'o'),plot(actual,'o'), title('Capacitance with Predicted and Actual Volume'), legend(['Predicted';'Actual   ']),xlabel('Time(s)'), ylabel('Volume');
 
 
 
@@ -435,6 +458,11 @@ function a = getOffset(A,Cp,Ctime)
 %     [~,Ai]=max(pks);
 %     [~,Ci]=max(Cpks);
     a = Clocs(1)-locs(1);
+end
+
+% % returns the truncated endpoint of a trace using the last valley
+function a = getLastVal()
+    
 end
 
 % % returns Offset Capacitance Trace
