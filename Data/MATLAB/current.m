@@ -134,7 +134,7 @@ for i=1:length(capfiles)
     for n = 1:length(Ttime)
         Ttime(n)=Ttime(n)-start;
     end
-    ts=timeseries(cap,time)
+    ts=timeseries(cap,time);
 
     %  Plot data
     plot(ts)
@@ -227,14 +227,14 @@ legend('Xiphoid', '4th Intercostal');
 
 Folder = 'Z:\GitRepositories\stretch-sense\Data\';
 %MACfilename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
-Filename = 'SenseAppData\Xiphoid\CAP\CAP_2018-03-17_X_F_CENTER_EILEEN_32inch.csv'
-Gfilename = 'SenseAppData\Xiphoid\GT\GT_2018-03-17_X_F_CENTER_EILEEN_32inch.csv'
+Filename = 'SenseAppData\Xiphoid\NoVideo\CAP_2018-07-24_Justin_Talking.csv';
+Gfilename = 'SenseAppData\Xiphoid\NoVideo\GT_2018-07-24_Justin_Talking.csv';
 
 %GTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542161920_U_F_CENTER.csv';
 %SGTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542162176_U_R_CORNER.csv';
 %capfiles = ["Xiphoid\CAP_2018-03-17_X_B_CENTER_EILEEN_31_5inch.csv","4thIntercostal\CAP_2018-03-17_4th_B_Center_EILEEN_34_5inch.csv"];
 %GTfiles = ["Xiphoid\GT_2018-03-17_X_B_CENTER_EILEEN_31_5inch.csv","4thIntercostal\GT_2018-03-17_4th_B_Center_EILEEN_34_5inch.csv"];
-figure; hold on;
+
 
 
     capfile=strcat(Folder,Filename);
@@ -244,8 +244,14 @@ figure; hold on;
     T=readtable(capfile);
     GT=readtable(GTfile);
     
-    time = T{:,2};
-    cap = T{:,1};
+%     % with heart rate
+    time = T{:,3};
+    cap = T{:,2};
+    heart = T{:,1};
+    
+% %     % without heart rate
+%     time = T{:,2};
+%     cap = T{:,1};
     
     start=time(1);
     for n = 1:length(time)
@@ -262,10 +268,14 @@ figure; hold on;
     for n = 1:length(Ttime)
         Ttime(n)=Ttime(n)-start;
     end
-    ts=timeseries(cap,time)
+    ts=timeseries(cap,time);
+    Hts = timeseries(heart,time);
 
     %  Plot data
-    plot(ts)
+    subplot(2,1,1);
+    plot(ts);
+   
+    
     
     % Find peaks in data
 %     [pks,locs,widths,proms] = findpeaks(cap, time,'MinPeakDistance',2, 'SortStr','descend');
@@ -289,18 +299,33 @@ figure; hold on;
     end
 
 %     text(locs+10,pks,num2str((1:numel(pks))'))
-title('Male, 37yrs')
-xlabel('time(1/30 s)');
+title('Effect of Talking on Capacitance Readings')
+xlabel('Time(s)');
 ylabel('Capacitance (pF)');
+legend('Xiphoid'); %'Start/End', 'Move', 'Deep Breath', 'Misc');
+ subplot(2,1,2);
 
-for n = 1:4
-    plot(NaN,NaN,linetype{n});
-end
-
-legend('Xiphoid', 'Move'); %'Start/End', 'Move', 'Deep Breath', 'Misc');
+% for n = 1:4
+%     plot(NaN,NaN,linetype{n});
+% end
 
 
-
+ 
+ 
+ plot(Hts);
+ title('Effect of Talking on Heart Rate')
+xlabel('Time(s)');
+ylabel('Heart Rate(beats/min)');
+legend('Heart Rate'); %'Start/End', 'Move', 'Deep Breath', 'Misc');
+ subplot(2,1,2);
+ 
+linetype = {'g--','r--'}; %'g--','r--','c--','m--'};
+    for n=1:length(Ttime)
+%         line([Ttime(n) Ttime(n)],ylim,linetype);
+          text(Ttime(n),min(ylim),Tlabel(n),'Rotation',90);
+          vline(Ttime(n),linetype{2});
+           
+    end
 
 %% Stretch Test
 path = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/StretchTesting.csv';
@@ -366,9 +391,9 @@ legend('Increasing', 'Decreasing');
 %% Convert Cap to Distance
 Folder = 'Z:\GitRepositories\stretch-sense\Data\';
 %MACfilename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
-Filename = "SenseAppData\Xiphoid\CAP_2018-03-25_Jan_Breathing_FC_Xiphoid_30inch.csv"
-Gfilename = "SenseAppData\Xiphoid\GT_2018-03-25_Jan_Breathing_FC_Xiphoid_30inch.csv"
-Sfilename = 'StretchTesting.csv'
+Filename = "SenseAppData\Xiphoid\CAP_2018-03-25_Jan_Breathing_FC_Xiphoid_30inch.csv";
+Gfilename = "SenseAppData\Xiphoid\GT_2018-03-25_Jan_Breathing_FC_Xiphoid_30inch.csv";
+Sfilename = 'StretchTesting.csv';
 %GTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542161920_U_F_CENTER.csv';
 %SGTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542162176_U_R_CORNER.csv';
 %capfiles = ["Xiphoid\CAP_2018-03-17_X_B_CENTER_EILEEN_31_5inch.csv","4thIntercostal\CAP_2018-03-17_4th_B_Center_EILEEN_34_5inch.csv"];
