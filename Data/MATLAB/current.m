@@ -227,8 +227,8 @@ legend('Xiphoid', '4th Intercostal');
 
 Folder = 'Z:\GitRepositories\stretch-sense\Data\';
 %MACfilename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
-Filename = 'SenseAppData\Xiphoid\CAP\CAP_2018-04-24_FVC_EX_Justin.csv'
-Gfilename = 'SenseAppData\Xiphoid\GT\GT_2018-04-24_FVC_EX_Justin.csv'
+Filename = 'SenseAppData\Xiphoid\CAP\CAP_2018-03-17_X_F_CENTER_EILEEN_32inch.csv'
+Gfilename = 'SenseAppData\Xiphoid\GT\GT_2018-03-17_X_F_CENTER_EILEEN_32inch.csv'
 
 %GTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542161920_U_F_CENTER.csv';
 %SGTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542162176_U_R_CORNER.csv';
@@ -283,8 +283,8 @@ figure; hold on;
     linetype = {'g--','r--'}; %'g--','r--','c--','m--'};
     for n=1:length(Ttime)
 %         line([Ttime(n) Ttime(n)],ylim,linetype);
-%         text(Ttime(n),min(ylim),Tlabel(n),'Rotation',90);
-          vline(Ttime(n),linetype{2}, Tlabel(n));
+          text(Ttime(n),min(ylim),Tlabel(n),'Rotation',90);
+          vline(Ttime(n),linetype{2});
            
     end
 
