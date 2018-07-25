@@ -2,18 +2,17 @@
 import javax.xml.xpath.*
 
 Folder = 'Z:\GitRepositories\stretch-sense\Data';
-sFolder = '\Spirometry';
+sFolder = '\RawSpirometry';
 
 % % Xiphoid
 XMLfile1 = char(fullfile(Folder, sFolder, 'Spiro_6_26_18.xml'));
 XMLfile2 = char(fullfile(Folder, sFolder, 'Spiro_5_31_18.xml'));
 
-Folder = 'Z:\GitRepositories\stretch-sense\Data\';
 %MACfilename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
-Filename1 = 'SenseAppData\Xiphoid\NoVideo\CAP_2018-06-26_JUSTIN_SVC.csv';
-Gfilename1 = 'SenseAppData\Xiphoid\NoVideo\GT_2018-06-26_JUSTIN_SVC.csv';
-Filename2 = 'SenseAppData\Xiphoid\NoVideo\CAP_2018-05-31_JUSTIN_SVC.csv';
-Gfilename2 = 'SenseAppData\Xiphoid\NoVideo\GT_2018-05-31_Justin_SVC.csv';
+Filename1 = '\SenseAppData\Xiphoid\NoVideo\CAP_2018-06-26_JUSTIN_SVC.csv';
+Gfilename1 = '\SenseAppData\Xiphoid\NoVideo\GT_2018-06-26_JUSTIN_SVC.csv';
+Filename2 = '\SenseAppData\Xiphoid\NoVideo\CAP_2018-05-31_JUSTIN_SVC.csv';
+Gfilename2 = '\SenseAppData\Xiphoid\NoVideo\GT_2018-05-31_Justin_SVC.csv';
 
 
 
@@ -173,7 +172,7 @@ function a = getCapTS(CapT)
     %reset timestamps to start at zero
     time = setTimeStamps(time);
 
-    %resample cap data to match sample rate from spirometer
+    %resample cap data to match sample rate from spirometer 
     tsvector = 0:sRate:time(length(time));
 
     ts=timeseries(cap,time);

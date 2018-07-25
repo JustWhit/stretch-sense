@@ -30,7 +30,7 @@ node1 = FlowNodes.item(FlowNodes.getLength-5);
 C1 = strsplit(char(node1.getFirstChild.getNodeValue));
 C1 = str2double(C1);
 
-plot(C1);
+
 
 
 %%
