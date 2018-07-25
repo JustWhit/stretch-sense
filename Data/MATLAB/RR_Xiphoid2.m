@@ -2,11 +2,11 @@
 import javax.xml.xpath.*
 
 Folder = 'Z:\GitRepositories\stretch-sense\Data';
-wFolder = '\Spirometry';
+sFolder = '\Spirometry';
 
 % % Xiphoid
-XMLfile1 = char(fullfile(Folder, wFolder, 'Spiro_6_26_18.xml'));
-XMLfile2 = char(fullfile(Folder, wFolder, 'Spiro_5_31_18.xml'));
+XMLfile1 = char(fullfile(Folder, sFolder, 'Spiro_6_26_18.xml'));
+XMLfile2 = char(fullfile(Folder, sFolder, 'Spiro_5_31_18.xml'));
 
 Folder = 'Z:\GitRepositories\stretch-sense\Data\';
 %MACfilename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
@@ -126,22 +126,28 @@ end
 %     a = [C,SD];
 % end
 
+
+
 % % Returns Peak Valley pairs for Cap and Spiro traces
 function [a, b] = getPeaksVals(CapTS, SpiroTS, GTtime,Sample)
     %[C,SD] = pairTraces(CapTS,SpiroTS,GTtime,Sample);
     C = getCapTrace(CapTS,GTtime,SpiroTS,Sample);
     C.Time = setTimeStamps(C.Time);
     % % Find peaks in data
-    [Cpks,Clocs,~,~] = findpeaks(C.Data, C.Time, 'MinPeakProminence',3);
-    [Cvals,Cvlocs,~,~] = findpeaks(-C.Data,C.Time,'MinPeakProminence',3);
+    [Cpks,Clocs,~,~] = findpeaks(C.Data, C.Time, 'MinPeakProminence',3,'MinPeakDistance',2);
+    [Cvals,Cvlocs,~,~] = findpeaks(-C.Data,C.Time,'MinPeakProminence',3,'MinPeakDistance',2);
+    
     [Spks,Slocs,~,~] = findpeaks(SpiroTS.Data, SpiroTS.Time, 'MinPeakProminence',0.1);
     [Svals,Svlocs,~,~] = findpeaks(-SpiroTS.Data,SpiroTS.Time,'MinPeakProminence',0.1);
-    plotPeaksVals(C,Cpks,Clocs,Cvals,Cvlocs,SpiroTS,Spks,Slocs,Svals,Svlocs);
-    length = min([numel(Spks) numel(Svals)]);
+    
+%     plotPeaksVals(C,Cpks,Clocs,Cvals,Cvlocs,SpiroTS,Spks,Slocs,-Svals,Svlocs);
+    length = min([numel(Spks) numel(Svals)])-1; % % subtract 1 to remove the last big Inhale
     Cpks = Cpks(1:length);
     Cvals = Cvals(1:length);
     Spks = Spks(1:length);
     Svals = Svals(1:length);
+    plotPeaksVals(C,Cpks,Clocs(1:length),Cvals,Cvlocs(1:length),SpiroTS,Spks,Slocs(1:length),-Svals,Svlocs(1:length));
+%     disp(Cvals);
     CapFeatures = abs(Cpks + Cvals);
     SpiroFeatures = abs(Spks + Svals);
     a = CapFeatures;
@@ -241,5 +247,5 @@ function plotPeaksVals(CapTS,Cpks,Clocs,Cvals,Cvlocs,SpiroTS, Spks,Slocs,Svals,S
     grid on; pFREQ = numel(Cpks)/max(Clocs); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
     plot(Cvlocs,-Cvals,'r*');
     plot(SpiroTS.Time,SpiroTS.Data,Slocs,Spks,'o');
-    plot(Svlocs,Svals,'r*');
+    plot(Svlocs,-Svals,'r*');
 end
