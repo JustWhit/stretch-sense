@@ -9,10 +9,10 @@ XMLfile1 = char(fullfile(Folder, sFolder, 'Spiro_6_26_18.xml'));
 XMLfile2 = char(fullfile(Folder, sFolder, 'Spiro_5_31_18.xml'));
 
 %MACfilename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
-Filename1 = '\RawAppData\Xiphoid\NoVideo\CAP_2018-06-26_JUSTIN_SVC.csv';
-Gfilename1 = '\RawAppData\Xiphoid\NoVideo\GT_2018-06-26_JUSTIN_SVC.csv';
-Filename2 = '\RawAppData\Xiphoid\NoVideo\CAP_2018-05-31_JUSTIN_SVC.csv';
-Gfilename2 = '\RawAppData\Xiphoid\NoVideo\GT_2018-05-31_Justin_SVC.csv';
+Filename1 = '\RawSensorData\Xiphoid\NoVideo\CAP_2018-06-26_JUSTIN_SVC.csv';
+Gfilename1 = '\RawSensorData\Xiphoid\NoVideo\GT_2018-06-26_JUSTIN_SVC.csv';
+Filename2 = '\RawSensorData\Xiphoid\NoVideo\CAP_2018-05-31_JUSTIN_SVC.csv';
+Gfilename2 = '\RawSensorData\Xiphoid\NoVideo\GT_2018-05-31_Justin_SVC.csv';
 
 
 
