@@ -314,6 +314,10 @@ C6p = C6p(1:length6);
 % % Find peaks in data
     [Apks1,Alocs1,Awidths1,Aproms1] = findpeaks(A1p, C1time, 'MinPeakProminence',3);
     [Cpks1,Clocs1,Cwidths1,Cproms1] = findpeaks(C1p, C1time, 'MinPeakProminence',0.1);
+    figure,hold on,plot(C1time,A1p,Alocs1,Apks1,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(Apks1)/max(Alocs1); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
+%     plot(vlocs,-vals,'r*');
+    plot(C1time,C1p,Clocs1,Cpks1,'r*');
+    
     [Apks2,Alocs2,Awidths2,Aproms2] = findpeaks(A2p, C2time, 'MinPeakProminence',3);
     [Cpks2,Clocs2,Cwidths2,Cproms2] = findpeaks(C2p, C2time, 'MinPeakProminence',0.1);
     [Apks3,Alocs3,Awidths3,Aproms3] = findpeaks(A3p, C3time, 'MinPeakProminence',3);
@@ -339,14 +343,8 @@ C6p = C6p(1:length6);
     [Cvals6,Cvlocs6,Cvwidths6,Cvproms6] = findpeaks(-C6p,C6time,'MinPeakProminence',0.1);
     
     
-    figure,hold on,plot(C1time,A1p,Alocs1,Apks1,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(Apks1)/max(Alocs1); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
-    plot(Avlocs1,-Avals1,'r*');
-     figure,hold on,plot(C2time,A2p,Alocs2,Apks2,'o'); ylabel('Capacitance(pF)');xlabel('Time(s)'); grid on; pFREQ = numel(Apks2)/max(Alocs2); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
-    plot(Avlocs2,-Avals2,'r*');
     
-%     plot(C1time,C1p,Clocs1,Cpks1,'r*');
-
-
+    
 % % Pair Peaks to Valleys
 lengthA = min([numel(Apks1) numel(Avals1)])-1;
 Apks1 = Apks1(1:lengthA);
@@ -418,7 +416,7 @@ ylabel('|Y(f)|')
 [C,I]= max(2*abs(Y(1:NFFT/2+1)));
 F = f(I);
 
-figure, hold on, plot(test,'o'), plot(pred,'o'),plot(actual,'o'), title('Capacitance with Predicted and Actual Volume'), legend(['Capacitance(pF)';'Pvolume(L)     ';'Avolume(L)     ']),xlabel('Data'), ylabel('Value');
+figure, hold on, plot(input), plot(pred),plot(actual), title('Capacitance with Predicterd and Actual Volume'), legend(['Capacitance(pF)';'Pvolume(L)     ';'Avolume(L)     ']),xlabel=('Time(s)'
 
 
 
@@ -440,11 +438,6 @@ function a = getOffset(A,Cp,Ctime)
     a = Clocs(1)-locs(1);
 end
 
-% % returns the truncated endpoint of a trace using the last valley
-function a = getLastVal()
-    
-end
-
 % % returns Offset Capacitance Trace
 function a = getCapTrace(CapTS,GTtime,SpiroTS,Sample)
     A = getsampleusingtime(CapTS,GTtime(2*Sample),GTtime((2*Sample)+1));
@@ -452,7 +445,7 @@ function a = getCapTrace(CapTS,GTtime,SpiroTS,Sample)
     Corr = getOffset(A,C,SpiroTS.Time);
 
     A = getsampleusingtime(CapTS,GTtime(2*Sample)-Corr,GTtime((2*Sample)+1));
-%     figure,hold on, plot(cumsum(diff(A.Data))), plot(C.^2), title(Sample);
+    figure,hold on, plot(cumsum(diff(A.Data))), plot(C.^2), title(Sample);
     a = A.Data;
 
 end
