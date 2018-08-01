@@ -1,7 +1,7 @@
 
 import javax.xml.xpath.*
 
-Folder = 'Z:\GitRepositories\stretch-sense\Data';
+Folder = 'Y:\GitRepositories\stretch-sense\Data';
 sFolder = '\RawSpirometry';
 
 % % Xiphoid
@@ -9,10 +9,10 @@ XMLfile1 = char(fullfile(Folder, sFolder, 'Spiro_6_26_18.xml'));
 XMLfile2 = char(fullfile(Folder, sFolder, 'Spiro_5_31_18.xml'));
 
 %MACfilename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
-Filename1 = '\RawSensorData\Xiphoid\NoVideo\CAP_2018-06-26_JUSTIN_SVC.csv';
-Gfilename1 = '\RawSensorData\Xiphoid\NoVideo\GT_2018-06-26_JUSTIN_SVC.csv';
-Filename2 = '\RawSensorData\Xiphoid\NoVideo\CAP_2018-05-31_JUSTIN_SVC.csv';
-Gfilename2 = '\RawSensorData\Xiphoid\NoVideo\GT_2018-05-31_Justin_SVC.csv';
+Filename1 = '\RawSensorData\Abdominal\CAP_2018-06-19_JUSTIN_SVC.csv';
+Gfilename1 = '\RawSensorData\Abdominal\GT_2018-06-19_JUSTIN_SVC.csv';
+Filename2 = '\RawSensorData\Xiphoid\CAP\CAP\CAP_2018-07-25_JUSTIN_SVC_TEST8.csv';
+Gfilename2 = '\RawSensorData\Xiphoid\CAP\GT\GT_2018-07-25JUSTIN_SVC_TEST8.csv';
 
 
 

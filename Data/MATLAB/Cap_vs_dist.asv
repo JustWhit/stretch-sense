@@ -61,5 +61,4 @@ cap_Test8.Time = cap_Test8.Time-start;
 Test8 = timeseries(cap_Test8.pF,cap_Test8.Time);
 [pred, predCI] = predict(mdl,cap_Test8.pF);
 Pred8 = timeseries(pred,cap_Test8.Time);
-figure;hold on;plot(Test8);title('Test Data');xlabel('Time(s)');ylabel('Capacitance(pF)');
-figure;plot(Pred8);title('Model Output');xlabel('Time(s)');ylabel('Distance(cm)');
+figure;hold on;plot(Test8);plot(Pred8);

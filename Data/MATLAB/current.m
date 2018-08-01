@@ -102,13 +102,13 @@ title('Kurtosis')
 
 
 %% Double Plot for Comparison
-Folder = 'Z:\GitRepositories\stretch-sense\Data\SenseAppData\';
+Folder = 'Y:\GitRepositories\stretch-sense\Data\';
 %filename = '/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/CAP_2018-03-07542162368_U_R_SIDE.csv';
 
 %GTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542161920_U_F_CENTER.csv';
 %SGTfile='/Users/justinschaffner/Desktop/GitRepositories/stretch-sense/Data/SenseAppData/GT_2018-03-07542162176_U_R_CORNER.csv';
-capfiles = ["Xiphoid\CAP_2018-03-17_X_B_CENTER_EILEEN_31_5inch.csv","4thIntercostal\CAP_2018-03-17_4th_B_Center_EILEEN_34_5inch.csv"];
-GTfiles = ["Xiphoid\GT_2018-03-17_X_B_CENTER_EILEEN_31_5inch.csv","4thIntercostal\GT_2018-03-17_4th_B_Center_EILEEN_34_5inch.csv"];
+capfiles = ["SenseAppData\Abdominal\CAP_2018-06-19_JUSTIN_SVC.csv","SenseAppData\Xiphoid\CAP\CAPJustin_T1_2018-04-27546540416.csv"];
+GTfiles = ["SenseAppData\Abdominal\GT_2018-06-19_JUSTIN_SVC.csv","SenseAppData\Xiphoid\GT\GTJustin_T1_2018-04-27546540416.csv"];
 figure; hold on;
 
 for i=1:length(capfiles)
@@ -159,13 +159,10 @@ for i=1:length(capfiles)
     end
 end
 %     text(locs+10,pks,num2str((1:numel(pks))'))
-title('Xiphoid vs 4th Intercostal::Back Center')
-xlabel('timestamp');
-ylabel('Capacitance (pF)');
-
-
-
-legend('Xiphoid', '4th Intercostal');
+title('Abdominal vs Xiphoid')
+xlabel('Time(s)');
+ylabel('Capacitance(pF)');
+legend('Abdominal','Xiphoid');
 
 
 
