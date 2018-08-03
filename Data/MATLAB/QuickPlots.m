@@ -28,3 +28,36 @@ for n=1:length(GTTime)
           %text(GTTime(n),min(ylim),GTLabel(n),'Rotation',90,'Color',[1 0 0]);
           vline(GTTime(n),'r--');
 end
+
+%% repeatability
+
+path = 'Y:\GitRepositories\stretch-sense\Data\Archive\StretchTesting.csv';
+
+test=readtable(path);
+
+Dist = [test{:,2}; test{:,4}];
+Cap = [test{:,3}; test{:,5}];
+
+Set = unique(Dist);
+CV = [];
+for n=1 : length(Set)
+    M = [];
+    for i=1:length(Dist)
+        if Dist(i) == Set(n)
+           M = [M;Cap(i)]; 
+        end
+        
+    end
+    temp = 100*(std(M)/mean(M));
+    CV = [CV;[Set(n) temp]];
+end
+
+disp(CV);
+disp('MEAN:');
+disp(mean(CV));
+
+
+
+
+
+
