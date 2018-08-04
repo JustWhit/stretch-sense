@@ -28,7 +28,7 @@ noteLabel = noteTbl{:,1};
 [WSensorTS,noteTime] = getWholeSensorTS(capTbl, noteTime, noteLabel);
 
 
-for i = 1:length(SpiroFiles)
+for i = 1:
     Sensors = extract(SpiroTraces, WSensorTS,noteTime,i);
     csvwrite(char(fullfile(Folder, outFolder,strcat(TestName,'_T', num2str(i),'.csv'))),Sensors); 
 end
