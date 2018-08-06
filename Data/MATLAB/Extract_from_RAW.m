@@ -7,9 +7,9 @@ outFolder = '\ExSensorSpiroData';
 
 % % Assign input and output files here
 TestName = '5_31_18_JUSTIN_SVC_TEST5';
-SpiroFiles = {'SpiroSVCVOLTest5T1_05_31_18.csv' 'SpiroSVCVOLTest5T2_05_31_18.csv' 'SpiroSVCVOLTest5T3_05_31_18.csv' 'SpiroSVCVOLTest5T4_05_31_18.csv'};
-capFile=char(fullfile(Folder,dFolder,'\Xiphoid\NoVideo\CAP_2018-05-31_JUSTIN_SVC.csv'));
-noteFile = char(fullfile(Folder,dFolder,'\Xiphoid\NoVideo\GT_2018-05-31_Justin_SVC.csv'));
+SpiroFiles = {'SVCVOLTest8T2_07_25_18.csv' 'SVCVOLTest8T3_07_25_18.csv' 'SVCVOLTest8T4_07_25_18.csv' 'SVCVOLTest8T5_07_25_18.csv'};
+capFile=char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\CAP_Heart_2018-07-25_JUSTIN_SVC_TEST8.csv'));
+noteFile = char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\GT_2018-07-25JUSTIN_SVC_TEST8.csv'));
 
 SpiroTraces = {};
 for n=1: length(SpiroFiles)
@@ -41,14 +41,15 @@ function a = extract(SpiroTraces, WSensorTS, NoteTime, Sample)
     SpiroTS = getSpiroTS(SpiroTraces,Sample);
     SensorTS = getSensorTraceTS(WSensorTS,NoteTime,SpiroTS,(Sample));
     % [Cap,Heart,AudioAmp] = getSensorTraces(WCapTS,NoteTime,Sample);
-    length = min([numel(SensorTS.Data) numel(SpiroTS.Data)]);
+    length = min([numel(SensorTS.Data(:,1)) numel(SpiroTS.Data)]);
     Time = SpiroTS.Time(1:length);
-    Cap = SensorTS.Data(1:length);
-%     Cap = SensorTS.Data(:,3).(1:length);
-%     Heart = SensorTS.Data(:,2).(1:length);
-%     AudioAmp = SensorTS.Data(:,1).(1:length);
+%     Cap = SensorTS.Data(1:length);
+    Cap = SensorTS.Data(1:length,1);
+    Heart = SensorTS.Data(1:length,2);
+%     AudioAmp = SensorTS.Data(1:length,1);
     Spiro = SpiroTS.Data(1:length);
-    a = [Time Cap Spiro]; % [Time Cap Heart AudioAmp Spiro]
+%     a = [Time Cap Spiro]; 
+    a =  [Time Cap Spiro Heart]; % AudioAmp];
     figure;hold on;plot(Time,Cap);plot(Time,Spiro.^2);title(num2str(Sample)); 
 end
 
@@ -80,15 +81,16 @@ end
 function [ts, noteTime] = getWholeSensorTS(SenseTbl, noteTime, noteLabel)
     % % % % IF FILE HAS HEART RATE, ADJUST COLUMNS RIGHT BY 1, ADD HEART
     % % % % RATE VARIABLE
-    time = SenseTbl{:,2};
-    length(time)
-    cap = SenseTbl{:,1};
+%     time = SenseTbl{:,2};
+%     length(time)
+%     cap = SenseTbl{:,1};
+
 %     % For files with more sensors
-%     time = SenseTbl{:,4};
-%     cap = SenseTbl{:,3};
-%     heart = SenseTbl{:,2};
+    time = SenseTbl{:,3};
+    cap = SenseTbl{:,2};
+    heart = SenseTbl{:,1};
 %     audioAmp = SenseTbl{:,1};
-%     Sensors = [cap heart audioAmp];
+    Sensors = [cap heart];
 
     sRate = 1/100;
     %reset timestamps to start at zero
@@ -97,8 +99,8 @@ function [ts, noteTime] = getWholeSensorTS(SenseTbl, noteTime, noteLabel)
     %resample cap data to match sample rate from spirometer
     tsvector = time(1):sRate:time(length(time));
 
-    ts=timeseries(cap,time);
-%     ts = timeseries(Sensors,time); % Use this instead when file has
+%     ts=timeseries(cap,time);
+    ts = timeseries(Sensors,time); % Use this instead when file has
 % %     multiple sensors
     ts = resample(ts,tsvector);
     figure; hold on; plot(ts); title('Whole TS');
@@ -117,13 +119,13 @@ function a = getSensorTraceTS(SenseTS,NoteTime,SpiroTS,Sample)
     Sensors.Time = setTimeStamps(Sensors.Time);
     Spiro = SpiroTS.Data;
     Corr = getOffset(Sensors,Spiro,SpiroTS.Time);
-    Corr
-    NoteTime(2*Sample)-Corr
-    
+%     Corr
+%     (NoteTime(2*Sample)-Corr)
+%     
     
     Sensors = getsampleusingtime(SenseTS,(NoteTime(2*Sample)-Corr),NoteTime((2*Sample)+1));
 
-    figure,hold on, plot(cumsum(diff(Sensors.Data))), plot(Spiro.^2), title(Sample);
+    figure,hold on, plot(cumsum(diff(Sensors.Data(:,2)))), plot(Spiro.^2), title(Sample);
     Sensors.Time = setTimeStamps(Sensors.Time);
     a = Sensors;
      
@@ -131,17 +133,18 @@ end
 
 
 % % returns offset for aligning traces
-function a = getOffset(CapTS,Spiro,Spirotime)
-    Cap = CapTS.Data;
-%     Cap = Cap.Data(:,3); % Use if CapTS has multiple sensors
-    time = CapTS.Time;
+function a = getOffset(SensorTS,Spiro,Spirotime)
+%     Cap = CapTS.Data;
+    Cap = SensorTS.Data(:,1); % Use if CapTS has multiple sensors
+    time = SensorTS.Time;
 %     time = setTimeStamps(CapTS.Time);
     
     
 % % Find peaks in data to align traces
-    [pks,locs,~,~] = findpeaks(Cap, time, 'MinPeakProminence',3);
+    [pks,locs,~,~] = findpeaks(Cap, time, 'MinPeakProminence',0.75,'MinPeakDistance',1);
     [Spks,Slocs,~,~] = findpeaks(Spiro, Spirotime, 'MinPeakProminence',0.1);
-    figure; hold on; plot(CapTS); plot(locs,pks,'r*');plot(Spirotime,Spiro);plot(Slocs,Spks,'r*');
+    figure;plot(Spirotime,Spiro);
+    figure; hold on; plot(SensorTS); plot(locs,pks,'r*');plot(Spirotime,Spiro);plot(Slocs,Spks,'r*');
 %     [~,Ci]=max(pks);
 %     [~,Si]=max(spks);
 Slocs(1)

@@ -7,9 +7,9 @@ outFolder = '\ExSensorSpiroData';
 
 % % Assign input and output files here
 TestName = '5_31_18_JUSTIN_SVC_TEST5';
-SpiroFiles = {'SpiroSVCVOLTest5T1_05_31_18.csv' 'SpiroSVCVOLTest5T2_05_31_18.csv' 'SpiroSVCVOLTest5T3_05_31_18.csv' 'SpiroSVCVOLTest5T4_05_31_18.csv'};
-capFile=char(fullfile(Folder,dFolder,'\Xiphoid\NoVideo\CAP_2018-05-31_JUSTIN_SVC.csv'));
-noteFile = char(fullfile(Folder,dFolder,'\Xiphoid\NoVideo\GT_2018-05-31_Justin_SVC.csv'));
+SpiroFiles = {'SVCVOLTest8T1_07_25_18.csv' 'SVCVOLTest8T2_07_25_18.csv' 'SVCVOLTest8T3_07_25_18.csv' 'SVCVOLTest8T4_07_25_18.csv' 'SVCVOLTest8T5_07_25_18'};
+capFile=char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\CAP_Heart_2018-07-25_JUSTIN_SVC_TEST8.csv'));
+noteFile = char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\GT_2018-07-25JUSTIN_SVC_TEST8.csv'));
 
 SpiroTraces = {};
 for n=1: length(SpiroFiles)
@@ -28,7 +28,7 @@ noteLabel = noteTbl{:,1};
 [WSensorTS,noteTime] = getWholeSensorTS(capTbl, noteTime, noteLabel);
 
 
-for i = 1:
+for i = 1:length(SpiroFiles)
     Sensors = extract(SpiroTraces, WSensorTS,noteTime,i);
     csvwrite(char(fullfile(Folder, outFolder,strcat(TestName,'_T', num2str(i),'.csv'))),Sensors); 
 end
@@ -48,7 +48,7 @@ function a = extract(SpiroTraces, WSensorTS, NoteTime, Sample)
 %     Heart = SensorTS.Data(:,2).(1:length);
 %     AudioAmp = SensorTS.Data(:,1).(1:length);
     Spiro = SpiroTS.Data(1:length);
-    a = [Time Cap Spiro]; % [Time Cap Heart AudioAmp Spiro]
+    a = [Time Cap Spiro]; % [Time Cap Spiro Heart AudioAmp]
     figure;hold on;plot(Time,Cap);plot(Time,Spiro.^2);title(num2str(Sample)); 
 end
 
@@ -80,13 +80,14 @@ end
 function [ts, noteTime] = getWholeSensorTS(SenseTbl, noteTime, noteLabel)
     % % % % IF FILE HAS HEART RATE, ADJUST COLUMNS RIGHT BY 1, ADD HEART
     % % % % RATE VARIABLE
-    time = SenseTbl{:,2};
-    length(time)
-    cap = SenseTbl{:,1};
+%     time = SenseTbl{:,2};
+%     length(time)
+%     cap = SenseTbl{:,1};
+
 %     % For files with more sensors
-%     time = SenseTbl{:,4};
-%     cap = SenseTbl{:,3};
-%     heart = SenseTbl{:,2};
+    time = SenseTbl{:,3};
+    cap = SenseTbl{:,2};
+    heart = SenseTbl{:,1};
 %     audioAmp = SenseTbl{:,1};
 %     Sensors = [cap heart audioAmp];
 
@@ -117,13 +118,13 @@ function a = getSensorTraceTS(SenseTS,NoteTime,SpiroTS,Sample)
     Sensors.Time = setTimeStamps(Sensors.Time);
     Spiro = SpiroTS.Data;
     Corr = getOffset(Sensors,Spiro,SpiroTS.Time);
-    Corr
-    NoteTime(2*Sample)-Corr
-    
+%     Corr
+%     (NoteTime(2*Sample)-Corr)
+%     
     
     Sensors = getsampleusingtime(SenseTS,(NoteTime(2*Sample)-Corr),NoteTime((2*Sample)+1));
 
-    figure,hold on, plot(cumsum(diff(Sensors.Data))), plot(Spiro.^2), title(Sample);
+    figure,hold on, plot(cumsum(diff(Sensors.Data(:,2)))), plot(Spiro.^2), title(Sample);
     Sensors.Time = setTimeStamps(Sensors.Time);
     a = Sensors;
      
@@ -132,8 +133,8 @@ end
 
 % % returns offset for aligning traces
 function a = getOffset(CapTS,Spiro,Spirotime)
-    Cap = CapTS.Data;
-%     Cap = Cap.Data(:,3); % Use if CapTS has multiple sensors
+%     Cap = CapTS.Data;
+    Cap = Cap.Data(:,2); % Use if CapTS has multiple sensors
     time = CapTS.Time;
 %     time = setTimeStamps(CapTS.Time);
     
