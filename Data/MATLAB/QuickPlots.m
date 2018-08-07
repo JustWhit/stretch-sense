@@ -57,6 +57,24 @@ disp('MEAN:');
 disp(mean(CV));
 
 
+%% Test 8 subplots
+
+start = TimeTest4T4(1);
+TimeTest4T4 = TimeTest4T4 - start;
+TEST4CAPTS = timeseries(CapTest4T4,TimeTest4T4);
+TEST4VOLTS = timeseries(VolTest4T4, TimeTest4T4);
+TEST4CAPTS = getsampleusingtime(TEST4CAPTS,0,29);
+TEST4VOLTS = getsampleusingtime(TEST4VOLTS, 0,29);
+
+figure;
+subplot(2,1,1);
+plot(TEST4CAPTS);xlabel('Time(s)');ylabel('Capacitance(pF)');title('');
+subplot(2,1,2);
+plot(TEST4VOLTS); xlabel('Time(s)');ylabel('Volume(L)');title('');
+disp(corrcoef(TEST4CAPTS.Data,TEST4VOLTS.Data));
+
+
+
 
 
 

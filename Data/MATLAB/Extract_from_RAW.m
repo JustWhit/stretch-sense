@@ -6,10 +6,10 @@ dFolder = '\RawSensorData';
 outFolder = '\ExSensorSpiroData';
 
 % % Assign input and output files here
-TestName = '5_31_18_JUSTIN_SVC_TEST5';
-SpiroFiles = {'SVCVOLTest8T2_07_25_18.csv' 'SVCVOLTest8T3_07_25_18.csv' 'SVCVOLTest8T4_07_25_18.csv' 'SVCVOLTest8T5_07_25_18.csv'};
-capFile=char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\CAP_Heart_2018-07-25_JUSTIN_SVC_TEST8.csv'));
-noteFile = char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\GT_2018-07-25JUSTIN_SVC_TEST8.csv'));
+TestName = '08_08_18_JUSTIN_SVC_TEST11';
+SpiroFiles = {'' '' ''};
+capFile=char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\CAP_2018-08-07_TEST_10_Justin.csv'));
+noteFile = char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\GT_2018-08-07_TEST_10_Justin.csv'));
 
 SpiroTraces = {};
 for n=1: length(SpiroFiles)
@@ -152,21 +152,6 @@ locs(1)
     a = Slocs(1)-locs(1);
 end
 
-% function a = getOffset(A,Cp,Ctime)
-%     Ap = A.Data;
-%     Atime = A.Time;
-%     start=Atime(1);
-%     for n = 1:length(Atime)
-%         Atime(n)=Atime(n)-start;
-%     end
-%     
-% % % Find peaks in data to align traces on Biggest Peak (Deep Breath)
-%     [pks,locs,~,~] = findpeaks(Ap, Atime, 'MinPeakProminence',3);
-%     [Cpks,Clocs,~,~] = findpeaks(Cp, Ctime, 'MinPeakProminence',0.25);
-% %     [~,Ai]=max(pks);
-% %     [~,Ci]=max(Cpks);
-%     a = Clocs(1)-locs(1);
-% end
 
 function Spiro = getSpiroTS(SpiroTraces, Sample)
     S = SpiroTraces{Sample};
