@@ -18,14 +18,18 @@ for n=1:length(FileListT)
    % % % Make changes her to adjust the Features Used by the Model
    
 %    % % Difference between Peaks and Valleys (inhale) minus deep breath
-%     CapF = abs(C(:,1) + C(:,3));
-%     SpiroF = abs(S(:,1) + S(:,3));
-%     Features = [Features; [CapF SpiroF]];
+    CapF = abs(C(:,1) + C(:,3));
+    SpiroF = abs(S(:,1) + S(:,3));
+    Features = [Features; [CapF SpiroF]];
 
    % % Values between Peaks and Valleys (inhale)
-    for i=1:length(C(:,1))
-        Features = [Features; [SensorTS.Data(C(i,4):C(i,2),1) SensorTS.Data(S(i,4):S(i,2),2)]];
-    end
+%     for i=1:numel(C(:,1))
+%         
+%         [CapF, SpiroF] = resizeDataSet(SensorTS.Data(C(i,4):C(i,2),1), SensorTS.Data(S(i,4):S(i,2),2) );
+%         numel(CapF)
+%         numel(SpiroF)
+%         Features = [Features; [CapF SpiroF]];
+%     end
     
     
     
@@ -53,6 +57,24 @@ plotScatter(inputs,targets);
 
 
 
+% % Returns the two sets of data points, stretched to fit the longest set.
+function [a, b] = resizeDataSet( setA, setB)
+   
+    assignin('base','setA',setA);
+    assignin('base','setB',setB);
+    
+    if(numel(setA) > numel(setB))
+        a = setA;
+        n = numel(setB);
+        b = transpose(interp1(1:n, setB, linspace(1,n,numel(setA)), 'nearest'));
+    else
+        b = setB;
+        n = numel(setA);
+        a = transpose(interp1(1:n, setA, linspace(1,n,numel(setB)),'nearest'));
+    end
+        
+end
+
 % % Returns teh percent difference between two values
 function a = pDiff(v1, v2)
     a = (abs(v1-v2)/((v1+v2)/2))*100;
@@ -61,7 +83,7 @@ end
 % % Shuffles the Data
 function ret = shuffleRow(mat)
 
-    [r c] = size(mat);
+    [r, ~] = size(mat);
     shuffledRow = randperm(r);
     ret = mat(shuffledRow, :);
 end
@@ -70,11 +92,11 @@ end
 function [a, b] = getPeaksVals(SensorsTS)
     
     % % Find peaks in data
-    [Cpks,Clocs,~,~] = findpeaks(SensorsTS.Data(:,1), SensorsTS.Time, 'MinPeakProminence',.75,'MinPeakDistance',1);
-    [Cvals,Cvlocs,~,~] = findpeaks(-SensorsTS.Data(:,1),SensorsTS.Time,'MinPeakProminence',.75,'MinPeakDistance',1);
+    [Cpks,Clocs,~,~] = findpeaks(SensorsTS.Data(:,1), 'MinPeakProminence',0.75,'MinPeakDistance',100);
+    [Cvals,Cvlocs,~,~] = findpeaks(-SensorsTS.Data(:,1), 'MinPeakProminence',0.75,'MinPeakDistance',100);
     
-    [Spks,Slocs,~,~] = findpeaks(SensorsTS.Data(:,2), SensorsTS.Time, 'MinPeakProminence',0.1);
-    [Svals,Svlocs,~,~] = findpeaks(-SensorsTS.Data(:,2),SensorsTS.Time,'MinPeakProminence',0.1);
+    [Spks,Slocs,~,~] = findpeaks(SensorsTS.Data(:,2), 'MinPeakProminence',0.1);
+    [Svals,Svlocs,~,~] = findpeaks(-SensorsTS.Data(:,2), 'MinPeakProminence',0.1);
     
 %     plotPeaksVals(C,Cpks,Clocs,Cvals,Cvlocs,SpiroTS,Spks,Slocs,-Svals,Svlocs);
     length = min([numel(Spks) numel(Svals)])-1; % % subtract 1 to remove the last big Inhale
@@ -86,7 +108,7 @@ function [a, b] = getPeaksVals(SensorsTS)
     Slocs = Slocs(1:length);
     Svals = Svals(1:length);
     Svlocs = Svlocs(1:length);
-    plotPeaksVals(SensorsTS,Cpks,Clocs(1:length),Cvals,Cvlocs(1:length),Spks,Slocs(1:length),Svals,Svlocs(1:length));
+    plotPeaksVals(SensorsTS,Cpks,Clocs,Cvals,Cvlocs,Spks,Slocs,Svals,Svlocs);
 %     disp(Cvals);
     a = [Cpks Clocs Cvals Cvlocs];
     b = [Spks Slocs Svals Svlocs];
@@ -127,7 +149,7 @@ function plotActualVSPred(actual,pred)
     plot(actual,'o'), 
     title('Predicted and Actual Volume'), 
     legend({'Predicted', 'Actual'}),
-    xlabel('Time(s)'), 
+    xlabel('Samples'), 
     ylabel('Volume');
 
 end
@@ -153,12 +175,14 @@ end
 function plotPeaksVals(SensorTS,Cpks,Clocs,Cvals,Cvlocs, Spks,Slocs,Svals,Svlocs)
     figure,
     hold on,
-    plot(SensorTS.Time,SensorTS.Data(:,1),Clocs,Cpks,'o'); 
+    plot(SensorTS.Data(:,1));
+    plot(Clocs,Cpks,'o'); 
     ylabel('Capacitance(pF)');
     xlabel('Time(s)'); 
     grid on; pFREQ = numel(Cpks)/max(Clocs); title(['Peak Detection Freq Estimate = ', num2str(pFREQ), ' Hz; RR est = ', num2str(pFREQ*60),'(1/min)']);
     plot(Cvlocs,-Cvals,'r*');
-    plot(SensorTS.Time,SensorTS.Data(:,2),Slocs,Spks,'o');
+    plot(SensorTS.Data(:,2));
+    plot(Slocs,Spks,'o');
     plot(Svlocs,-Svals,'r*');
 end
 

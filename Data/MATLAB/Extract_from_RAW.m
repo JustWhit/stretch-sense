@@ -6,10 +6,10 @@ dFolder = '\RawSensorData';
 outFolder = '\ExSensorSpiroData';
 
 % % Assign input and output files here
-TestName = '08_08_18_JUSTIN_SVC_TEST11';
-SpiroFiles = {'' '' ''};
-capFile=char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\CAP_2018-08-07_TEST_10_Justin.csv'));
-noteFile = char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\GT_2018-08-07_TEST_10_Justin.csv'));
+TestName = '07_25_18_JUSTIN_SVC_TEST8';
+SpiroFiles = {'SVCVOLTest8T2_07_25_18.csv' 'SVCVOLTest8T3_07_25_18.csv' 'SVCVOLTest8T4_07_25_18.csv' 'SVCVOLTest8T5_07_25_18.csv'};
+capFile=char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\CAP_Heart_2018-07-25_JUSTIN_SVC_TEST8.csv'));
+noteFile = char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\GT_2018-07-25JUSTIN_SVC_TEST8.csv'));
 
 SpiroTraces = {};
 for n=1: length(SpiroFiles)
@@ -30,7 +30,7 @@ noteLabel = noteTbl{:,1};
 
 for i = 1:length(SpiroFiles)
     Sensors = extract(SpiroTraces, WSensorTS,noteTime,i);
-    csvwrite(char(fullfile(Folder, outFolder,strcat(TestName,'_T', num2str(i),'.csv'))),Sensors); 
+    csvwrite(char(fullfile(Folder, outFolder,strcat(TestName,'_T', num2str(i+1),'.csv'))),Sensors); 
 end
 
 
