@@ -7,14 +7,20 @@ outFolder = '\ExSensorSpiroData';
 
 % % Assign input and output files here
 TestName = '07_25_18_JUSTIN_SVC_TEST8';
-SpiroFiles = {'SVCVOLTest8T2_07_25_18.csv' 'SVCVOLTest8T3_07_25_18.csv' 'SVCVOLTest8T4_07_25_18.csv' 'SVCVOLTest8T5_07_25_18.csv'};
+VOLFiles = {'SVCVOLTest8T2_07_25_18.csv' 'SVCVOLTest8T3_07_25_18.csv' 'SVCVOLTest8T4_07_25_18.csv' 'SVCVOLTest8T5_07_25_18.csv'};
+FLOWFiles = {'SVCFLOWTest8T2_07_25_18.csv' 'SVCFLOWTest8T3_07_25_18.csv' 'SVCFLOWTest8T4_07_25_18.csv' 'SVCFLOWTest8T5_07_25_18.csv'};
 capFile=char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\CAP_Heart_2018-07-25_JUSTIN_SVC_TEST8.csv'));
 noteFile = char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\GT_2018-07-25JUSTIN_SVC_TEST8.csv'));
 
-SpiroTraces = {};
-for n=1: length(SpiroFiles)
-   temp = csvread(char(fullfile(Folder,sFolder,SpiroFiles{n})));
-   SpiroTraces{n} = temp;
+VOLTraces = {};
+for n=1: length(VOLFiles)
+   temp = csvread(char(fullfile(Folder,sFolder,VOLFiles{n})));
+   VOLTraces{n} = temp;
+end
+FLOWTraces = {};
+for n=1: length(FLOWFiles)
+   temp = csvread(char(fullfile(Folder,sFolder,FLOWFiles{n})));
+   FLOWTraces{n} = temp;
 end
 
 
@@ -28,29 +34,35 @@ noteLabel = noteTbl{:,1};
 [WSensorTS,noteTime] = getWholeSensorTS(capTbl, noteTime, noteLabel);
 
 
-for i = 1:length(SpiroFiles)
-    Sensors = extract(SpiroTraces, WSensorTS,noteTime,i);
+for i = 1:length(VOLFiles)
+    Sensors = extract(VOLTraces, FLOWTraces, WSensorTS,noteTime,i);
     csvwrite(char(fullfile(Folder, outFolder,strcat(TestName,'_T', num2str(i+1),'.csv'))),Sensors); 
 end
+
+
 
 
 % % Main Function, Pairs Spirometer Data with Cap trace, saves result to a
 % % CSV file. If Heart Rate or Audio Amplitude is included, make
 % % adjustments where noted for each function
-function a = extract(SpiroTraces, WSensorTS, NoteTime, Sample)
-    SpiroTS = getSpiroTS(SpiroTraces,Sample);
-    SensorTS = getSensorTraceTS(WSensorTS,NoteTime,SpiroTS,(Sample));
+function a = extract(VOLTraces, FLOWTraces, WSensorTS, NoteTime, Sample)
+    VOLTS = getSpiroTS(VOLTraces,Sample);
+    FLOWTS = getSpiroTS(FLOWTraces,Sample);
+    
+    SensorTS = getSensorTraceTS(WSensorTS,NoteTime,VOLTS,(Sample));
     % [Cap,Heart,AudioAmp] = getSensorTraces(WCapTS,NoteTime,Sample);
-    length = min([numel(SensorTS.Data(:,1)) numel(SpiroTS.Data)]);
-    Time = SpiroTS.Time(1:length);
+    length = min([numel(SensorTS.Data(:,1)) numel(VOLTS.Data)]);
+    Time = VOLTS.Time(1:length);
 %     Cap = SensorTS.Data(1:length);
     Cap = SensorTS.Data(1:length,1);
     Heart = SensorTS.Data(1:length,2);
 %     AudioAmp = SensorTS.Data(1:length,1);
-    Spiro = SpiroTS.Data(1:length);
+    VOL = VOLTS.Data(1:length);
+    FLOW = FLOWTS.Data(1:length);
+    
 %     a = [Time Cap Spiro]; 
-    a =  [Time Cap Spiro Heart]; % AudioAmp];
-    figure;hold on;plot(Time,Cap);plot(Time,Spiro.^2);title(num2str(Sample)); 
+    a =  [Time Cap VOL FLOW Heart]; % AudioAmp];
+    figure;hold on;plot(Time,Cap);plot(Time,VOL.^2);title(num2str(Sample)); 
 end
 
 % % % Pair Spiro and Cap traces

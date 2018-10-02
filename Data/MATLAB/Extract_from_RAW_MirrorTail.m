@@ -7,9 +7,9 @@ outFolder = '\ExSensorSpiroData';
 
 % % Assign input and output files here
 TestName = '08_06_18_JUSTIN_SVC_TEST9';
-SpiroFiles = {'SVCVOLTest9T1_08_06_18.csv' 'SVCVOLTest9T2_08_06_18.csv' 'SVCVOLTest10T3_08_07_18.csv'};
-capFile=char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\CAP_2018-08-07_TEST_10_Justin.csv'));
-noteFile = char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\GT_2018-08-07_TEST_10_Justin.csv'));
+SpiroFiles = {'SVCFLOWTest9T1_08_25_18.csv' 'SVCFLOWTest9T2_08_25_18.csv' 'SVCFLOWTest9T3_08_25_18.csv' 'SVCFLOWTest9T4_08_25_18.csv' 'SVCFLOWTest9T5_08_25_18.csv'};
+capFile=char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\CAP_2018-08-06_Justin_SVC_Test9.csv'));
+noteFile = char(fullfile(Folder,dFolder,'\Xiphoid\CAP_HEART_SPIRO\GT_2018-08-06_Justin_SVC_Test9.csv'));
 
 SpiroTraces = {};
 for n=1: length(SpiroFiles)
@@ -50,7 +50,7 @@ function a = extract(SpiroTraces, WSensorTS, NoteTime, Sample)
     Spiro = SpiroTS.Data(1:length);
 %     a = [Time Cap Spiro]; 
     a =  [Time Cap Spiro Heart]; % AudioAmp];
-    figure;hold on;plot(Time,Cap);plot(Time,Spiro.^2);title(num2str(Sample)); 
+%     figure;hold on;plot(Time,Cap);plot(Time,Spiro.^2);title(num2str(Sample)); 
 end
 
 % % Finds the Exhale tail and flips it
@@ -58,12 +58,13 @@ function a = flipExhaleTail(CapTrace)
 figure; hold on;
 plot(CapTrace);
     [Cpks,Clocs,~,~] = findpeaks(CapTrace, 'MinPeakProminence',3,'MinPeakDistance',200);
-    [Cvals,Cvlocs,~,~] = findpeaks(-CapTrace, 'MinPeakProminence',3,'MinPeakDistance',200);
+    [Cvals,Cvlocs,~,~] = findpeaks(-CapTrace, 'MinPeakProminence',1.2,'MinPeakDistance',200);
     % find the peak index of the peak of inhale
     Mx = max(Cpks);
     assignin('base','Max',Mx);
     i = find(Cpks==Mx,1);
 plot(Clocs(i),Cpks(i),'r*');
+plot(Cvlocs, -Cvals, 'r*');
     % find the position in the trace of peak of inhale
     position = Clocs(i);
     % find the first valley after that peak in time
@@ -183,7 +184,7 @@ function a = getSensorTraceTS(SenseTS,NoteTime,SpiroTS,Sample)
     
     Sensors = getsampleusingtime(SenseTS,(NoteTime(2*Sample)-Corr),NoteTime((2*Sample)+1)+8);
     Sensors.Data(:,1) = flipExhaleTail(Sensors.Data(:,1));
-    figure,hold on, plot(cumsum(diff(Sensors.Data(:,2)))), plot(Spiro.^2), title(Sample);
+%     figure,hold on, plot(cumsum(diff(Sensors.Data(:,2)))), plot(Spiro.^2), title(Sample);
     Sensors.Time = setTimeStamps(Sensors.Time);
     a = Sensors;
      
@@ -201,8 +202,8 @@ function a = getOffset(SensorTS,Spiro,Spirotime)
 % % Find peaks in data to align traces
     [pks,locs,~,~] = findpeaks(Cap, time, 'MinPeakProminence',3,'MinPeakDistance',1);
     [Spks,Slocs,~,~] = findpeaks(Spiro, Spirotime, 'MinPeakProminence',0.1);
-    figure;plot(Spirotime,Spiro);
-    figure; hold on; plot(SensorTS); plot(locs,pks,'r*');plot(Spirotime,Spiro);plot(Slocs,Spks,'r*');
+%     figure;plot(Spirotime,Spiro);
+%     figure; hold on; plot(SensorTS); plot(locs,pks,'r*');plot(Spirotime,Spiro);plot(Slocs,Spks,'r*');
 %     [~,Ci]=max(pks);
 %     [~,Si]=max(spks);
 % Slocs(1)
